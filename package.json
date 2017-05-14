@@ -1,0 +1,23 @@
+{
+  "name": "vultrainer",
+  "version": "1.0.0",
+  "description": "vultrainer's UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flachi1109/vultrainer.git"
+  },
+  "author": "flachi1109",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flachi1109/vultrainer/issues"
+  },
+  "homepage": "https://github.com/flachi1109/vultrainer#readme",
+  "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "bower": "^1.8.0"
+  }
+}
