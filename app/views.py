@@ -10,4 +10,5 @@ def test_docker(request):
 
     clogger = ColorLogger()
 
-    clogger.debug(client.containers[0])
+    clogger.debug(client.containers)
+    return render(request, 'test.html')
