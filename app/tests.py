@@ -8,4 +8,4 @@ import docker
 # Create your views here.
 def test_docker(request):
 
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'testvar':'abc'})
