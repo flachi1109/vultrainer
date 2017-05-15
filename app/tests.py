@@ -1,3 +1,15 @@
 from django.test import TestCase
+from django.shortcuts import render
 
-# Create your tests here.
+from auxiliary import ColorLogger
+import docker
+
+
+# Create your views here.
+def test_docker(request):
+    # client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+    #
+    # clogger = ColorLogger()
+    #
+    # clogger.debug(client.containers)
+    return render(request, 'index.html')

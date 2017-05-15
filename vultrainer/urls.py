@@ -20,7 +20,13 @@ from django.conf import settings
 
 from app import views
 
+# will be deleted
+from app import tests
+
 urlpatterns = [
-    url(r'^test/', views.test_docker),
+    # will be deleted
+    url(r'^test/', tests.test_docker),
 ]
+
+# add static resource url
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
