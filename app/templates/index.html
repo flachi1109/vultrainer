@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -722,7 +722,7 @@
 								<div class="row">
 									<div class="space-6"></div>
 
-									<div class="col-xs-7">
+									<div class="col-xs-6">
 										<div class="widget-header widget-header-flat widget-header-small">
 												<h5>
 													<i class="icon-signal"></i>
@@ -731,7 +731,7 @@
 
 											</div>
 										<div class="table-responsive">
-											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+											<table id="endpoint_info_table" class="table table-striped table-bordered table-hover">
 
 
 												<tbody>
@@ -781,7 +781,7 @@
 
 									<div class="vspace-sm"></div>
 
-									<div class="col-sm-5">
+									<div class="col-sm-6">
 										<div class="widget-box">
 											<div class="widget-header widget-header-flat widget-header-small">
 												<h5>
@@ -1174,7 +1174,13 @@
 				});
 				
 			
-			})
+			});
+			
+			//make the endpoint info table have the same height as widget
+			$(".widget-body").bind('resize', function(){
+				$('#endpoint_info_table').css('height', $(".widget-body").outerHeight())
+			});
+
 		</script>
 	<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
 </body>
