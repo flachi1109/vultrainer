@@ -22,7 +22,7 @@ class ColorLogger(object):
         self.console_handler.setFormatter(self.fmt)
 
     def debug(self, message):
-        self.set_color('yellow')
+        self.set_color('green')
         self.logger.debug(message)
 
     def info(self, message):
@@ -30,7 +30,7 @@ class ColorLogger(object):
         self.logger.info(message)
 
     def warning(self, message):
-        self.set_color('green')
+        self.set_color('yellow')
         self.logger.warning(message)
 
     def error(self, message):

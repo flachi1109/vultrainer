@@ -726,7 +726,7 @@
 										<div class="widget-header widget-header-flat widget-header-small">
 												<h5>
 													<i class="icon-signal"></i>
-													访问来源
+													当前节点信息
 												</h5>
 
 											</div>
@@ -737,41 +737,61 @@
 												<tbody>
 													<tr>
 														<td>
-															<a href="#">ace.com</a>
+															<a href="#">节点系统</a>
 														</td>
 														<td class="hidden-480">
-															<span class="label label-sm label-warning">Expiring</span>
+															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.os_type }}</span>
 														</td>
 
 													</tr>
 
 													<tr>
 														<td>
-															<a href="#">base.com</a>
+															<a href="#">节点名称</a>
 														</td>
 
 														<td class="hidden-480">
-															<span class="label label-sm label-success">Registered</span>
+															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.sys_name }}</span>
 														</td>
 													</tr>
 
 													<tr>
 														<td>
-															<a href="#">base.com</a>
+															<a href="#">系统架构</a>
 														</td>
 
 														<td class="hidden-480">
-															<span class="label label-sm">Registered</span>
+															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.arch }}</span>
 														</td>
 													</tr>
 
 													<tr>
 														<td>
-															<a href="#">base.com</a>
+															<a href="#">CPU数量</a>
 														</td>
 
 														<td class="hidden-480">
-															<span class="label label-sm label-success">Registered</span>
+															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.cpu_count }}</span>
+														</td>
+													</tr>
+                                                    
+                                                    <tr>
+														<td>
+															<a href="#">系统内存</a>
+														</td>
+
+														<td class="hidden-480">
+															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.total_mem }} MB</span>
+														</td>
+													</tr>
+                                                    
+                                                    <tr>
+														<td>
+															<a href="#">Docker版本</a>
+														</td>
+
+														<td class="hidden-480">
+															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.docker_version }}</span>
 														</td>
 													</tr>
 												</tbody>
