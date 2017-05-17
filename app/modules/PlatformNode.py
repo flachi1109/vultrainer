@@ -1,8 +1,13 @@
 # -*- coding:utf-8 -*-
-
 import psutil
 import platform
 import docker
+from requests.exceptions import ConnectionError
+
+from ..auxiliary.ColorLogger import ColorLogger
+
+clogger = ColorLogger()
+
 
 class PlatformNode(object):
     '''
@@ -15,8 +20,14 @@ class PlatformNode(object):
         self.cpu_count = psutil.cpu_count()
         self.total_mem = psutil.virtual_memory().total
 
-        docker_node = docker.DockerClient(base_url='unix://var/run/docker.sock')
-        self.docker_version = docker_node.version()
+        # Determine whether the service is started
+        try:
+            docker_node = docker.DockerClient(base_url='unix://var/run/docker.sock')
+            self.docker_version = docker_node.version()
+        except ConnectionError as err:
+            clogger.debug(err)
+            clogger.critical('Docker service may be not started')
+
         
     def getNodeInfo(self):
 
