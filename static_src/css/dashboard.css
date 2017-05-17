@@ -1,7 +1,9 @@
-.widget-case{
+.summary-ico-case{
 	border-radius: 50%;
 	background: #428bca;
+	width: 65px;
+	height: 65px;
 }
-.widget-icon{
+.summary-ico-grey{
 	color: #e7e7e7;
 }

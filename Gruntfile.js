@@ -62,7 +62,7 @@ module.exports = function(grunt) {
 		watch: {
 			build: {
 				files: ['src/*.js'],
-				tasks: ['jshint', 'csslint', 'cssmin', 'uglify'],
+				tasks: ['csslint', 'jshint', 'cssmin', 'uglify'],
 				options: { spawn: false }
 			}
 		}
