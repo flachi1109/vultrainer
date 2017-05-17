@@ -43,8 +43,8 @@ module.exports = function(grunt) {
 		// cssmin to compress css files
 		cssmin:{
             options:{
-                stripBanners:true,
-                banner:'/*!<%= pkg.name %> - <%= pkg.version %>-‘+‘<%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                stripBanners: true,
+                banner:'/*!<%= pkg.name %> - <%= pkg.version %>-'+'<%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             build:{
                 src:'static_src/<%= pkg.name %>_all.css',
@@ -76,5 +76,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 
-	grunt.registerTask('build', ['jshint','csslint','concat', 'uglify', 'watch']);
+	grunt.registerTask('build', ['jshint','csslint','concat', 'cssmin', 'uglify', 'watch']);
 };
