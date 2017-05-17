@@ -3,44 +3,66 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-		// concat to merge js files
+		// concat to merge js&css files
 		concat: {
 			options: {
 				// define separator for the merged files
 				separator: ';'
 			},
-			dist: {
-				src: ['js_modules/*.js'],
-				dest: 'app/templates/assets/js/<%= pkg.name %>.js'
+			jsConcat: {
+				src: ['static_src/js/*.js'],
+				dest: 'static_src/<%= pkg.name %>_all.js'
+			},
+			cssConcat: {
+				src: ['static_src/css/*.css'],
+				dest: 'static_src/<%= pkg.name %>_all.css'
 			}
 		},
 
 		// uglify to compress js files
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <% grunt.templates.today("dd-mm-yyyy") %> */\n'
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 			},
 			dist: {
 				//uglify can compress the js files from concat task  
 				files: {
-					'app/templates/assets/js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+					'app/templates/assets/js/<%= pkg.name %>.min.js': ['<%= concat.jsConcat.dest %>']
 				}
 			}
 		},
 
-		// jshint to check standard of js code
-		jshint: {
-			files: ['Gruntfile.js', 'js_modules/*.js'],
+		
+		jshint: {			
 			options: {
 				jshintrc: '.jshintrc'
-			}
+			},
+			build: ['Gruntfile.js', 'static_src/js/*.js']
 		},
 
+		// cssmin to compress css files
+		cssmin:{
+            options:{
+                stripBanners:true,
+                banner:'/*!<%= pkg.name %> - <%= pkg.version %>-‘+‘<%= grunt.template.today("yyyy-mm-dd") %> */\n'
+            },
+            build:{
+                src:'static_src/<%= pkg.name %>_all.css',
+                dest:'app/templates/assets/css/<%= pkg.name %>.min.css'
+            }
+        },
+        
+        csslint:{
+            options:{
+                csslintrc: '.csslintrc'
+            },
+            build:['static_src/css/*.css']
+         },
 
 		watch: {
 			build: {
 				files: ['src/*.js'],
-				tasks: ['jshint', 'uglify'],
+				tasks: ['jshint', 'csslint', 'cssmin', 'uglify'],
 				options: { spawn: false }
 			}
 		}
@@ -51,6 +73,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-csslint');
 
-	grunt.registerTask('build', ['concat', 'uglify', 'jshint', 'watch']);
+	grunt.registerTask('build', ['jshint','csslint','concat', 'uglify', 'watch']);
 };
