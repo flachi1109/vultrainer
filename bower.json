@@ -16,5 +16,9 @@
   ],
   "dependencies": {
     "angular": "angularjs#^1.6.4"
+  },
+  "devDependencies": {
+    "angular-resource": "^1.6.4",
+    "angular-ui-router": "^1.0.3"
   }
 }
