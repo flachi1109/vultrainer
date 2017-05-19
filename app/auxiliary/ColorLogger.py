@@ -2,8 +2,8 @@ import logging
 
 
 class ColorLogger(object):
-    def __init__(self, level=logging.DEBUG):
-        self.level = level
+    def __init__(self, level='DEBUG'):
+        self.level = logging.getLevelName(level)
         self.color = {'red': '\033[1;31m', 'green': '\033[1;32m', 'yellow': '\033[1;33m', 'blue': '\033[1;34m',
                       'purple': '\033[1;35m', 'default': '\033[0m'}
         self.logger = logging.getLogger('test_logger')
