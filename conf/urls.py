@@ -24,7 +24,7 @@ from app import views
 from app import tests
 
 urlpatterns = [
-    url(r'^index/', views.reps_index),
+    url(r'^index/', views.PlatformNodeViews.as_view()),
     # will be deleted
     url(r'^test/', tests.test_docker),
     url(r'^index_test/', tests.dev_index),

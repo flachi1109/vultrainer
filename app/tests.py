@@ -3,7 +3,6 @@
 from django.test import TestCase
 from django.shortcuts import render
 
-from modules.PlatformNode import PlatformNode
 from auxiliary.ColorLogger import ColorLogger
 import docker
 
