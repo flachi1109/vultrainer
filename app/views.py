@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from django.shortcuts import render
 
-from modules.PlatformNode import PlatformNode
+from models import PlatformNode
 from auxiliary.ColorLogger import ColorLogger
 
 import docker

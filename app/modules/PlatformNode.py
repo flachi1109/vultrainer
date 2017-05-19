@@ -11,7 +11,7 @@ clogger = ColorLogger()
 
 class PlatformNode(object):
     '''
-    PlatformNode represents the docker node
+    PlatformNode represents the docker node  which include some vulnerable containers
     '''
 
     def __init__(self):
