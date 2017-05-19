@@ -1,18 +1,23 @@
 # -*- coding:utf-8 -*-
+import ConfigParser
+
 from django.shortcuts import render
-from models import PlatformNode
-from auxiliary.ColorLogger import ColorLogger
+from rest_framework import viewsets
+from rest_framework.response import Response
+
+from app.serializers import PlatformNodeSerailizer
+from app.auxiliary.ColorLogger import ColorLogger
 
 import docker
 
-clogger = ColorLogger()
+# config clogger
+config = ConfigParser.ConfigParser()
+config.read('app/extra.conf')
+clogger = ColorLogger(level=config.get('logger', 'level'))
 
-def reps_index(request):
-    '''
-    Response to the "index" url
-    :return: index.html page
-    '''
-    plat_node = PlatformNode()
-    node_info = plat_node.getNodeInfo()
 
-    return render(request, 'index.html', {'node_info': node_info})
+class PlatformNodeViewsSet(viewsets.ModelViewSet):
+    serializer_class = PlatformNodeSerailizer
+
+    def get_node_info(self):
+

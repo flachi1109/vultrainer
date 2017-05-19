@@ -5,14 +5,14 @@ import platform
 from requests.exceptions import ConnectionError
 
 import docker
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 from django.db import models
 
 from auxiliary.ColorLogger import ColorLogger
 
 # config clogger
 config = ConfigParser.ConfigParser()
-config.read('extra.conf')
+config.read('app/extra.conf')
 clogger = ColorLogger(level=config.get('logger', 'level'))
 
 class PlatformNode(models.Model):
@@ -29,7 +29,8 @@ class PlatformNode(models.Model):
         # Determine whether the service is started
         try:
             docker_node = docker.DockerClient(base_url='unix://var/run/docker.sock')
-            self.docker_version = docker_node.version()
+            self.arch = str(docker_node.version()[u'Arch'])
+            self.docker_version = str(docker_node.version()[u'Version'])
         except ConnectionError as err:
             clogger.debug(err)
             clogger.critical('Docker service may be not started')
