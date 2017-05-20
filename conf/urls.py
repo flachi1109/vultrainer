@@ -26,8 +26,7 @@ from app import tests
 urlpatterns = [
     url(r'^index/', views.PlatformNodeViews.as_view()),
     # will be deleted
-    url(r'^test/', tests.test_docker),
-    url(r'^index_test/', tests.dev_index),
+    url(r'^test/', tests.test),
 ]
 
 # add static resource url

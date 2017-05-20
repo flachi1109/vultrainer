@@ -11,17 +11,7 @@ clogger = ColorLogger()
 
 # Create your views here.
 
-def test_docker(request):
+def test(request):
 
-    plat_node = PlatformNode()
 
-    node_info = plat_node.getNodeInfo()
-
-    return render(request, 'test.html', {'testvar': node_info})
-
-def dev_index(request):
-    plat_node = PlatformNode()
-
-    node_info = plat_node.getNodeInfo()
-
-    return render(request, 'index.html', {'node_info': node_info})
+    return render(request, 'index.html')
