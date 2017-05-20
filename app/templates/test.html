@@ -4,11 +4,23 @@
 <html>
 <head>
     <title>test docker</title>
+    <script src="{% static 'js/angular/angular.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/angular-ui-router.min.js' %}" type="text/javascript"></script>
 </head>
 <body>
-    <h1>This is a test</h1>
-    <img src="{% static 'images/gallery/image-1.jpg' %}">
- 
-    <h2>Hello, </h2>
-</body>
+     <div ng-app="myApp"> 
+            <div ui-view></div> <!-- 视图 --> 
+    </div> 
+</body> 
+<script type="text/javascript"> 
+    var app = angular.module('myApp', ['ui.router']); 
+    app.config(["$stateProvider", function ($stateProvider) { 
+        $stateProvider 
+        .state("home", 
+            { 
+                url: '/', 
+                template:'<div>模板内容......</div>' 
+            }) 
+    }]); 
+</script>
 </html>

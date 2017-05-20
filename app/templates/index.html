@@ -1,14 +1,33 @@
-<% load staticfiles %>
+{% load staticfiles %}
 
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<title>vultrainer</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<% include 'staticfiles.html'%>
+        <meta charset="utf-8" />
+        <title>vultrainer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% include 'staticfiles.html'%}
+
 </head>
 <body>
+        {% include 'navbar.html' %}
+         <div class="main-container" id="main-container">
+            <script type="text/javascript">
+                try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+            </script>
 
+            <div class="main-container-inner">
+                <!-- import siderbar -->
+                {% include 'siderbar.html' %}
+                <!-- /import siderbar -->
+
+
+
+            </div><!-- /.main-container-inner -->
+
+            <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+                <i class="icon-double-angle-up icon-only bigger-110"></i>
+            </a>
+        </div><!-- /.main-container -->
 </body>
 </html>

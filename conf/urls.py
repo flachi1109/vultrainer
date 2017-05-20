@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 # from django.contrib import admin
 
 from app import views
@@ -29,6 +30,7 @@ urlpatterns = [
     # will be deleted
     url(r'^test/', tests.test),
     url(r'^index/', views.PlatformNodeViews.as_view()),
+    url(r'^$', TemplateView.as_view(template_name='test.html'))
 ]
 
 # add static resource url

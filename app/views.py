@@ -6,11 +6,10 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from app.models import PlatformNode
+from app.handler.PlatformNodeHandler import PlatformNodeHandeler
 from app.serializers import PlatformNodeSerailizer
 from app.auxiliary.ColorLogger import ColorLogger
 
-import docker
 
 # config clogger
 config = ConfigParser.ConfigParser()
@@ -22,9 +21,9 @@ class PlatformNodeViews(APIView):
     '''
     :return platform node's information of performance
     '''
-    def get(self, request):
-        platform_node = PlatformNode()
-        platform_node_seriarlizer = PlatformNodeSerailizer(platform_node)
+    def get(self, request, node_id):
+        platform_node_info = PlatformNodeHandeler(node_id)
+        platform_node_seriarlizer = PlatformNodeSerailizer(platform_node_info)
 
         return Response(platform_node_seriarlizer.data)
     def post(self, request):
