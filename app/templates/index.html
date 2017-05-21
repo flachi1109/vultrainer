@@ -9,7 +9,7 @@
         {% include 'staticfiles.html'%}
 
 </head>
-<body>
+<body ng-app='vultrainer'>
         {% include 'navbar.html' %}
          <div class="main-container" id="main-container">
             <script type="text/javascript">
@@ -20,6 +20,11 @@
                 <!-- import siderbar -->
                 {% include 'siderbar.html' %}
                 <!-- /import siderbar -->
+
+                <!-- main-content -->
+                <div ui-view class="main-content">
+                </div>
+                <!-- /main-content -->
 
 
 

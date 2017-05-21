@@ -1,309 +1,307 @@
-				<div class="main-content">
-					<div class="breadcrumbs" id="breadcrumbs">
-						<script type="text/javascript">
-							try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-						</script>
+<div class="breadcrumbs" id="breadcrumbs">
+	<script type="text/javascript">
+		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+	</script>
 
-						<ul class="breadcrumb">
-							<li>
-								<i class="icon-home home-icon"></i>
-								<a href="#">首页</a>
-							</li>
-							<li class="active">控制台</li>
-						</ul><!-- .breadcrumb -->
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<a href="#">首页</a>
+		</li>
+		<li class="active">控制台</li>
+	</ul><!-- .breadcrumb -->
 
-						<div class="nav-search" id="nav-search">
-							<form class="form-search">
-								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-									<i class="icon-search nav-search-icon"></i>
-								</span>
-							</form>
-						</div><!-- #nav-search -->
+	<div class="nav-search" id="nav-search">
+		<form class="form-search">
+			<span class="input-icon">
+				<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+				<i class="icon-search nav-search-icon"></i>
+			</span>
+		</form>
+	</div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+	<div class="page-header">
+		<h1>
+			控制台
+			<small>
+				<i class="icon-double-angle-right"></i>
+				 查看
+			</small>
+		</h1>
+	</div><!-- /.page-header -->
+
+	<div class="row">
+		<div class="col-xs-12 col-md-12">
+			<!-- PAGE CONTENT BEGINS -->
+
+			<div class="alert alert-block alert-success">
+				<button type="button" class="close" data-dismiss="alert">
+					<i class="icon-remove"></i>
+				</button>
+
+				<i class="icon-ok green"></i>
+
+				欢迎使用
+				<strong class="green">
+					Ace后台管理系统
+					<small>(v1.2)</small>
+				</strong>
+				,轻量级好用的后台管理系统模版.	
+			</div>
+
+			<div class="row">
+				<div class="space-6"></div>
+
+				<div class="col-xs-6 col-md-6">
+					<div class="widget-header widget-header-flat widget-header-small">
+							<h5>
+								<i class="icon-signal"></i>
+								当前节点信息
+							</h5>
+
+						</div>
+					<div class="table-responsive">
+						<table id="endpoint_info_table" class="table table-striped table-bordered table-hover">
+
+
+							<tbody>
+								<tr>
+									<td>
+										<a href="#">节点系统</a>
+									</td>
+									<td class="hidden-480">
+										<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.os_type }}</span>
+									</td>
+
+								</tr>
+
+								<tr>
+									<td>
+										<a href="#">节点名称</a>
+									</td>
+
+									<td class="hidden-480">
+										<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.sys_name }}</span>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										<a href="#">系统架构</a>
+									</td>
+
+									<td class="hidden-480">
+										<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.arch }}</span>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										<a href="#">CPU数量</a>
+									</td>
+
+									<td class="hidden-480">
+										<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.cpu_count }}</span>
+									</td>
+								</tr>
+                                
+                                <tr>
+									<td>
+										<a href="#">系统内存</a>
+									</td>
+
+									<td class="hidden-480">
+										<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.total_mem }} MB</span>
+									</td>
+								</tr>
+                                
+                                <tr>
+									<td>
+										<a href="#">Docker版本</a>
+									</td>
+
+									<td class="hidden-480">
+										<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.docker_version }}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- /.table-responsive -->
+				</div>
+
+				<div class="vspace-sm"></div>
+
+				<div class="col-sm-6">
+					<div class="widget-box">
+						<div class="widget-header widget-header-flat widget-header-small">
+							<h5>
+								<i class="icon-signal"></i>
+								访问来源
+							</h5>
+
+							<div class="widget-toolbar no-border">
+								<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+									本周
+									<i class="icon-angle-down icon-on-right bigger-110"></i>
+								</button>
+
+								<ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
+									<li class="active">
+										<a href="#" class="blue">
+											<i class="icon-caret-right bigger-110">&nbsp;</i>
+											本周
+										</a>
+									</li>
+
+									<li>
+										<a href="#">
+											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+											上周
+										</a>
+									</li>
+
+									<li>
+										<a href="#">
+											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+											本月
+										</a>
+									</li>
+
+									<li>
+										<a href="#">
+											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+											上月
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget-body">
+							<div class="widget-main">
+								<div id="piechart-placeholder"></div>
+
+								<div class="hr hr8 hr-double"></div>
+
+								<div class="clearfix">
+									<div class="grid3">
+										<span class="grey">
+											<i class="icon-facebook-sign icon-2x blue"></i>
+											&nbsp; likes
+										</span>
+										<h4 class="bigger pull-right">1,255</h4>
+									</div>
+
+									<div class="grid3">
+										<span class="grey">
+											<i class="icon-twitter-sign icon-2x purple"></i>
+											&nbsp; tweets
+										</span>
+										<h4 class="bigger pull-right">941</h4>
+									</div>
+
+									<div class="grid3">
+										<span class="grey">
+											<i class="icon-pinterest-sign icon-2x red"></i>
+											&nbsp; pins
+										</span>
+										<h4 class="bigger pull-right">1,050</h4>
+									</div>
+								</div>
+							</div><!-- /widget-main -->
+						</div><!-- /widget-body -->
+					</div><!-- /widget-box -->
+				</div><!-- /span -->
+			</div><!-- /row -->
+
+			<!-- Node key resource amount -->
+			<div class="hr hr32 hr-dotted"></div>
+			<div class="row">
+				<div class="col-xs-12 col-md-12">
+					<div class="row">
+						<div class="col-xs-6 col-md-6">
+							<button class="btn btn-light btn-block btn-elg">
+								<div class="summary-ico">
+									<i class="icon-bug icon-4x icon-only"></i>
+									
+								</div>
+								<div class="summary-info">
+									<div class="summary-amount">
+										<div>2</div>
+										<div>Target Machines</div>
+									</div>
+									<div class="summary-status">
+										
+									</div>
+								</div>
+							</button>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<button class="btn btn-light btn-block btn-elg">
+								<div class="summary-ico">
+									<i class="icon-tasks icon-4x icon-only"></i>
+									
+								</div>
+								<div class="summary-info">
+									<div class="summary-amount">
+										<div>3</div>
+										<div>Target Images</div>
+									</div>
+									<div class="summary-status">
+										
+									</div>
+								</div>
+							</button>
+						</div>
 					</div>
-
-					<div class="page-content">
-						<div class="page-header">
-							<h1>
-								控制台
-								<small>
-									<i class="icon-double-angle-right"></i>
-									 查看
-								</small>
-							</h1>
-						</div><!-- /.page-header -->
-
-						<div class="row">
-							<div class="col-xs-12 col-md-12">
-								<!-- PAGE CONTENT BEGINS -->
-
-								<div class="alert alert-block alert-success">
-									<button type="button" class="close" data-dismiss="alert">
-										<i class="icon-remove"></i>
-									</button>
-
-									<i class="icon-ok green"></i>
-
-									欢迎使用
-									<strong class="green">
-										Ace后台管理系统
-										<small>(v1.2)</small>
-									</strong>
-									,轻量级好用的后台管理系统模版.	
+				</div>
+			</div>
+			<div class="space-6"></div>
+			<div class="row">
+				<div class="col-xs-12 col-md-12">
+					<div class="row">
+						<div class="col-xs-6 col-md-6">
+							<button class="btn btn-light btn-block btn-elg">
+								<div class="summary-ico">
+									<i class="icon-hdd icon-4x icon-only"></i>
+									
 								</div>
-
-								<div class="row">
-									<div class="space-6"></div>
-
-									<div class="col-xs-6 col-md-6">
-										<div class="widget-header widget-header-flat widget-header-small">
-												<h5>
-													<i class="icon-signal"></i>
-													当前节点信息
-												</h5>
-
-											</div>
-										<div class="table-responsive">
-											<table id="endpoint_info_table" class="table table-striped table-bordered table-hover">
-
-
-												<tbody>
-													<tr>
-														<td>
-															<a href="#">节点系统</a>
-														</td>
-														<td class="hidden-480">
-															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.os_type }}</span>
-														</td>
-
-													</tr>
-
-													<tr>
-														<td>
-															<a href="#">节点名称</a>
-														</td>
-
-														<td class="hidden-480">
-															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.sys_name }}</span>
-														</td>
-													</tr>
-
-													<tr>
-														<td>
-															<a href="#">系统架构</a>
-														</td>
-
-														<td class="hidden-480">
-															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.arch }}</span>
-														</td>
-													</tr>
-
-													<tr>
-														<td>
-															<a href="#">CPU数量</a>
-														</td>
-
-														<td class="hidden-480">
-															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.cpu_count }}</span>
-														</td>
-													</tr>
-                                                    
-                                                    <tr>
-														<td>
-															<a href="#">系统内存</a>
-														</td>
-
-														<td class="hidden-480">
-															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.total_mem }} MB</span>
-														</td>
-													</tr>
-                                                    
-                                                    <tr>
-														<td>
-															<a href="#">Docker版本</a>
-														</td>
-
-														<td class="hidden-480">
-															<span class="label label-sm label-primary arrowed arrowed-right">{{ node_info.docker_version }}</span>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div><!-- /.table-responsive -->
+								<div class="summary-info">
+									<div class="summary-amount">
+										<div>2</div>
+										<div>Volumes</div>
 									</div>
-
-									<div class="vspace-sm"></div>
-
-									<div class="col-sm-6">
-										<div class="widget-box">
-											<div class="widget-header widget-header-flat widget-header-small">
-												<h5>
-													<i class="icon-signal"></i>
-													访问来源
-												</h5>
-
-												<div class="widget-toolbar no-border">
-													<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
-														本周
-														<i class="icon-angle-down icon-on-right bigger-110"></i>
-													</button>
-
-													<ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
-														<li class="active">
-															<a href="#" class="blue">
-																<i class="icon-caret-right bigger-110">&nbsp;</i>
-																本周
-															</a>
-														</li>
-
-														<li>
-															<a href="#">
-																<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
-																上周
-															</a>
-														</li>
-
-														<li>
-															<a href="#">
-																<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
-																本月
-															</a>
-														</li>
-
-														<li>
-															<a href="#">
-																<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
-																上月
-															</a>
-														</li>
-													</ul>
-												</div>
-											</div>
-
-											<div class="widget-body">
-												<div class="widget-main">
-													<div id="piechart-placeholder"></div>
-
-													<div class="hr hr8 hr-double"></div>
-
-													<div class="clearfix">
-														<div class="grid3">
-															<span class="grey">
-																<i class="icon-facebook-sign icon-2x blue"></i>
-																&nbsp; likes
-															</span>
-															<h4 class="bigger pull-right">1,255</h4>
-														</div>
-
-														<div class="grid3">
-															<span class="grey">
-																<i class="icon-twitter-sign icon-2x purple"></i>
-																&nbsp; tweets
-															</span>
-															<h4 class="bigger pull-right">941</h4>
-														</div>
-
-														<div class="grid3">
-															<span class="grey">
-																<i class="icon-pinterest-sign icon-2x red"></i>
-																&nbsp; pins
-															</span>
-															<h4 class="bigger pull-right">1,050</h4>
-														</div>
-													</div>
-												</div><!-- /widget-main -->
-											</div><!-- /widget-body -->
-										</div><!-- /widget-box -->
-									</div><!-- /span -->
-								</div><!-- /row -->
-
-								<!-- Node key resource amount -->
-								<div class="hr hr32 hr-dotted"></div>
-								<div class="row">
-									<div class="col-xs-12 col-md-12">
-										<div class="row">
-											<div class="col-xs-6 col-md-6">
-												<button class="btn btn-light btn-block btn-elg">
-													<div class="summary-ico">
-														<i class="icon-bug icon-4x icon-only"></i>
-														
-													</div>
-													<div class="summary-info">
-														<div class="summary-amount">
-															<div>2</div>
-															<div>Target Machines</div>
-														</div>
-														<div class="summary-status">
-															
-														</div>
-													</div>
-												</button>
-											</div>
-											<div class="col-xs-6 col-md-6">
-												<button class="btn btn-light btn-block btn-elg">
-													<div class="summary-ico">
-														<i class="icon-tasks icon-4x icon-only"></i>
-														
-													</div>
-													<div class="summary-info">
-														<div class="summary-amount">
-															<div>3</div>
-															<div>Target Images</div>
-														</div>
-														<div class="summary-status">
-															
-														</div>
-													</div>
-												</button>
-											</div>
-										</div>
+									<div class="summary-status">
+										
 									</div>
 								</div>
-								<div class="space-6"></div>
-								<div class="row">
-									<div class="col-xs-12 col-md-12">
-										<div class="row">
-											<div class="col-xs-6 col-md-6">
-												<button class="btn btn-light btn-block btn-elg">
-													<div class="summary-ico">
-														<i class="icon-hdd icon-4x icon-only"></i>
-														
-													</div>
-													<div class="summary-info">
-														<div class="summary-amount">
-															<div>2</div>
-															<div>Volumes</div>
-														</div>
-														<div class="summary-status">
-															
-														</div>
-													</div>
-												</button>
-											</div>
-											<div class="col-xs-6 col-md-6">
-												<button class="btn btn-light btn-block btn-elg">
-													<div class="summary-ico">
-														<i class="icon-sitemap icon-4x icon-only"></i>
-														
-													</div>
-													<div class="summary-info">
-														<div class="summary-amount">
-															<div>2</div>
-															<div>Networks</div>
-														</div>
-														<div class="summary-status">
-															
-														</div>
-													</div>
-												</button>
-											</div>
-										</div>
+							</button>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<button class="btn btn-light btn-block btn-elg">
+								<div class="summary-ico">
+									<i class="icon-sitemap icon-4x icon-only"></i>
+									
+								</div>
+								<div class="summary-info">
+									<div class="summary-amount">
+										<div>2</div>
+										<div>Networks</div>
+									</div>
+									<div class="summary-status">
+										
 									</div>
 								</div>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
-								<!-- Node key resource amount ENDS -->
-							</div><!-- /.col -->
-						</div><!-- /.row -->
-					</div><!-- /.page-content -->
-				</div><!-- /.main-content -->
+			<!-- Node key resource amount ENDS -->
+		</div><!-- /.col -->
+	</div><!-- /.row -->
+</div><!-- /.page-content -->

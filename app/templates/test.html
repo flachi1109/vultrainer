@@ -8,19 +8,33 @@
     <script src="{% static 'js/angular/angular-ui-router.min.js' %}" type="text/javascript"></script>
 </head>
 <body>
-     <div ng-app="myApp"> 
+     <div ng-app="testApp" ng-controller="siteCtrl" > 
             <div ui-view></div> <!-- 视图 --> 
+            <div>
+            {%  verbatim%}
+                {{ arch }}  
+            {% endverbatim %}
+            </div>
     </div> 
 </body> 
 <script type="text/javascript"> 
-    var app = angular.module('myApp', ['ui.router']); 
-    app.config(["$stateProvider", function ($stateProvider) { 
-        $stateProvider 
-        .state("home", 
-            { 
-                url: '/', 
-                template:'<div>模板内容......</div>' 
-            }) 
-    }]); 
+        angular.module('myApp', ['ui.router'])
+            .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
+                            $urlRouterProvider.otherwise('/1/dashboard/test');
+
+                            $stateProvider.state('home', {
+                                    url: '/1/dashboard/test',
+                                    template: '<div>hello test</div>'
+                            });
+            }]);
+            
+            var app = angular.module('testApp', []);
+                app.controller('siteCtrl', function($scope, $http) {
+                    $http.get("/1/dashboard/nodeinfo")
+                    .then(function (response) {
+                        $scope.arch = response.data.arch;
+                    });
+            });
+            
 </script>
 </html>
