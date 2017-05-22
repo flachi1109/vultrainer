@@ -77,8 +77,14 @@ module.exports = function(grunt) {
                 files: ['static_src/css/*.css', 'static_src/js/*.js'],
                 tasks: ['csslint', 'concat', 'cssmin', 'uglify'],
                 options: { spawn: false }
+		},
+        
+         only_copy: {
+            files: ['static_src/css/*.css', 'static_src/js/*.js'],
+            tasks: ['csslint', 'concat', 'cssmin', 'copy'],
+            options: { spawn: false }
             }
-		}
+        }
 
 	});
 
@@ -92,5 +98,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build', ['jshint','csslint','concat', 'cssmin', 'uglify', 'watch']);
     grunt.registerTask('without_check', ['concat', 'cssmin', 'uglify', 'watch:without_check']);
-    grunt.registerTask('only_copy', ['concat', 'cssmin', 'copy']);
+    grunt.registerTask('only_copy', ['concat', 'cssmin', 'copy', 'watch:only_copy']);
 };

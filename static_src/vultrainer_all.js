@@ -1,7 +1,7 @@
 // angular.module('vultrainer.dashboard', [])
 // 	.factory('dashboardService', function($http){
 // 		var service = {};
-// 		service.getNodeinfo = function(nodeId){
+// 		service.getNodeInfo = function(nodeId){
 // 			var arch = '';
 // 			$http.get("/" + nodeId + "/dashboard/nodeinfo")
 // 				.then(function (response) {
@@ -13,15 +13,13 @@
 
 angular.module('vultrainer.dashboard', [])
     .service('dashboardService', function ($http) {
-
-        this.getNodeinfo = function (nodeId) {
-            var arch = '';
-			$http.get("/" + nodeId + "/dashboard/nodeinfo")
-				.then(function (response) {
-                    arch = response.data.arch;
-              	});
-            return arch;
-			};
+        this.arch = '';
+        this.getNodeInfo = function (nodeId) {
+        	   $http.get("/" + nodeId + "/dashboard/nodeinfo")
+		.then(function (response) {
+                         return  response.data.arch;
+              	});  
+        };
     });;angular.module('vultrainer.platformNode', [])
     .service('nodeService', function () {
         this.nodeId = '';
@@ -56,6 +54,8 @@ angular.module('vultrainer.dashboard', [])
         }])
     .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
         function($rootScope, $scope, dashboardService){
-            console.log(dashboardService.getNodeInfo($rootScope.nodeId));
+            console.log($rootScope.nodeId);
+            $scope.arch = dashboardService.getNodeInfo($rootScope.nodeId);
+            console.log($scope.arch );
         }]);
 

@@ -20,6 +20,8 @@ angular.module('vultrainer', [
         }])
     .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
         function($rootScope, $scope, dashboardService){
-            console.log(dashboardService.getNodeInfo($rootScope.nodeId));
+            console.log($rootScope.nodeId);
+            $scope.arch = dashboardService.getNodeInfo($rootScope.nodeId);
+            console.log($scope.arch );
         }]);
 
