@@ -83,5 +83,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 
 	grunt.registerTask('build', ['jshint','csslint','concat', 'cssmin', 'uglify', 'watch']);
-         grunt.registerTask('without_check', ['concat', 'cssmin', 'uglify', 'watch:without_check']);
+    grunt.registerTask('without_check', ['concat', 'cssmin', 'uglify', 'watch:without_check']);
 };

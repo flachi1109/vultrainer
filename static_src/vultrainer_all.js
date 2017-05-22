@@ -13,7 +13,6 @@
     });
 ;angular.module('vultrainer', [
     'ui.router',
-    'vultrainer.platformNode'
     ])
     .config(['$stateProvider', '$urlRouterProvider', 'nodeIdProvider',
         function($stateProvider, $urlRouterProvider, nodeIdProvider){
