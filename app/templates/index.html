@@ -6,10 +6,9 @@
         <meta charset="utf-8" />
         <title>vultrainer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {% include 'staticfiles.html'%}
 
 </head>
-<body ng-app='vultrainer' ng-controller='vultrainerCtrl'>
+<body ng-app='vultrainer'>
         {% include 'navbar.html' %}
          <div class="main-container" id="main-container">
             <script type="text/javascript">
@@ -34,5 +33,7 @@
                 <i class="icon-double-angle-up icon-only bigger-110"></i>
             </a>
         </div><!-- /.main-container -->
+
+        {% include 'staticfiles.html'%}
 </body>
 </html>

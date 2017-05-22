@@ -1,5 +1,5 @@
 angular.module('vultrainer.platformNode', [])
-    .provider('nodeIdProvider', function () {
+    .service('nodeService', function () {
         this.nodeId = '';
 
         this.setNodeId = function (nodeId) {

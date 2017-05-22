@@ -59,18 +59,25 @@ module.exports = function(grunt) {
             build:['static_src/css/*.css']
          },
 
+         copy: {
+         	angular_file: {
+         		files: {
+         				'app/templates/assets/js/<%= pkg.name %>.min.js': ['<%= concat.jsConcat.dest %>']
+         			}
+         		}
+         },
+
 		watch: {
 			build: {
 				files: ['static_src/css/*.css', 'static_src/js/*.js'],
 				tasks: ['csslint', 'jshint', 'concat', 'cssmin', 'uglify'],
 				options: { spawn: false }
 			},
-                            without_check: {
-                                    files: ['static_src/css/*.css', 'static_src/js/*.js'],
-                                    tasks: ['csslint', 'concat', 'cssmin', 'uglify'],
-                                    options: { spawn: false }
-                            }
-
+            without_check: {
+                files: ['static_src/css/*.css', 'static_src/js/*.js'],
+                tasks: ['csslint', 'concat', 'cssmin', 'uglify'],
+                options: { spawn: false }
+            }
 		}
 
 	});
@@ -81,6 +88,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
+	grunt.loadNpmTasks('grunt-contrib-copy')
 
 	grunt.registerTask('build', ['jshint','csslint','concat', 'cssmin', 'uglify', 'watch']);
     grunt.registerTask('without_check', ['concat', 'cssmin', 'uglify', 'watch:without_check']);

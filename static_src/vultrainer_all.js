@@ -1,6 +1,6 @@
 //make the endpoint info table have the same height 
 ;angular.module('vultrainer.platformNode', [])
-    .provider('nodeIdProvider', function () {
+    .service('nodeService', function () {
         this.nodeId = '';
 
         this.setNodeId = function (nodeId) {
@@ -13,21 +13,21 @@
     });
 ;angular.module('vultrainer', [
     'ui.router',
+    'vultrainer.platformNode'
     ])
-    .config(['$stateProvider', '$urlRouterProvider', 'nodeIdProvider',
-        function($stateProvider, $urlRouterProvider, nodeIdProvider){
-            
-            $nodeIdProvider.setNodeId(1);
-            
-            $urlRouterProvider.otherwise('/dashboard/');
-            
-            $stateProvider.state('dashboard', {
-                    url: '/dashboard/',
-                    templateUrl: '/dashboard/'
-            });
-}]);
+    .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
+        // get the connection of the specified platformNode
 
-angular.module('vultrainer')
-    .controller('vultrainerCtrl', function($scope, nodeIdProvider){
-            $scope.nodeId  = nodeIdProvider.getNodeId();
-    });
+        $urlRouterProvider.otherwise('/dashboard/');
+            
+        $stateProvider.state('dashboard', {
+            url: '/dashboard/',
+            templateUrl: '/dashboard/',
+            controller: 'vultrainerController'
+        });
+    }])
+    .controller('vultrainerController', ['$scope', 'nodeService', function($scope, nodeService){
+            nodeService.setNodeId(1);
+            $scope.nodeId = nodeService.getNodeId();
+    }]);
+
