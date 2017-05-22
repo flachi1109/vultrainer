@@ -34,7 +34,6 @@ urlpatterns = [
     url(r'(?P<node_id>\d+)/', include('app.urls')),
 
     # will be deleted
-    url(r'^index/', views.PlatformNodeViews.as_view()),
     url(r'^test/', TemplateView.as_view(template_name='test.html'))
 ]
 

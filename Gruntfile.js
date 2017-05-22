@@ -88,8 +88,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
-	grunt.loadNpmTasks('grunt-contrib-copy')
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('build', ['jshint','csslint','concat', 'cssmin', 'uglify', 'watch']);
     grunt.registerTask('without_check', ['concat', 'cssmin', 'uglify', 'watch:without_check']);
+    grunt.registerTask('only_copy', ['concat', 'cssmin', 'copy']);
 };

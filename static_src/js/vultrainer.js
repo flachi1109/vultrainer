@@ -1,6 +1,7 @@
 angular.module('vultrainer', [
     'ui.router',
-    'vultrainer.platformNode'
+    'vultrainer.platformNode',
+    'vultrainer.dashboard'
     ])
     .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
         // get the connection of the specified platformNode
@@ -13,8 +14,12 @@ angular.module('vultrainer', [
             controller: 'vultrainerController'
         });
     }])
-    .controller('vultrainerController', ['$scope', 'nodeService', function($scope, nodeService){
+    .controller('vultrainerController', ['$rootScope', 'nodeService', function($rootScope, nodeService){
             nodeService.setNodeId(1);
-            $scope.nodeId = nodeService.getNodeId();
-    }]);
+            $rootScope.nodeId = nodeService.getNodeId();
+        }])
+    .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
+        function($rootScope, $scope, dashboardService){
+            console.log(dashboardService.getNodeInfo($rootScope.nodeId));
+        }]);
 
