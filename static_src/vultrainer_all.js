@@ -1,26 +1,25 @@
-// angular.module('vultrainer.dashboard', [])
-// 	.factory('dashboardService', function($http){
-// 		var service = {};
-// 		service.getNodeInfo = function(nodeId){
-// 			var arch = '';
-// 			$http.get("/" + nodeId + "/dashboard/nodeinfo")
-// 				.then(function (response) {
-//                     arch = response.data.arch;
-//               	});
-//             return arch;
-// 		};
-// 	});
-
+//The module serve dashboard html 
 angular.module('vultrainer.dashboard', [])
-    .service('dashboardService', function ($http) {
-        this.arch = '';
-        this.getNodeInfo = function (nodeId) {
-        	   $http.get("/" + nodeId + "/dashboard/nodeinfo")
-		.then(function (response) {
-                         return  response.data.arch;
-              	});  
-        };
-    });;angular.module('vultrainer.platformNode', [])
+	// The service to obtain platform node basic info 
+	.factory('dashboardService', ['$http', '$q', function($http, $q){
+		var service = {};
+		service.getNodeInfo = function(nodeId){
+			var deffered = $q.defer();
+
+			$http.get("/" + nodeId + "/dashboard/nodeinfo")
+				.then(function(response){
+					deffered.resolve(response.data);
+				}, function(response){
+					deffered.reject(response.data);
+				});
+			return deffered.promise;
+
+		};
+		return service;
+	}]);
+;//The module serve platform node related operations
+angular.module('vultrainer.platformNode', [])
+	// The service to obtain platform node ID
     .service('nodeService', function () {
         this.nodeId = '';
 
@@ -32,13 +31,14 @@ angular.module('vultrainer.dashboard', [])
             return this.nodeId;
         };
     });
-;angular.module('vultrainer', [
+;//The main module which can specify the default path and controll all function.
+angular.module('vultrainer', [
     'ui.router',
     'vultrainer.platformNode',
     'vultrainer.dashboard'
     ])
+    // specify the default path
     .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
-        // get the connection of the specified platformNode
 
         $urlRouterProvider.otherwise('/dashboard/');
             
@@ -48,14 +48,22 @@ angular.module('vultrainer.dashboard', [])
             controller: 'vultrainerController'
         });
     }])
-    .controller('vultrainerController', ['$rootScope', 'nodeService', function($rootScope, nodeService){
+    //Obtain the current platform node ID
+    .controller('vultrainerController', ['$rootScope', '$scope', 'nodeService', function($rootScope, $scope, nodeService){
+            $scope.test1 = 'def';
             nodeService.setNodeId(1);
             $rootScope.nodeId = nodeService.getNodeId();
         }])
-    .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
-        function($rootScope, $scope, dashboardService){
-            console.log($rootScope.nodeId);
-            $scope.arch = dashboardService.getNodeInfo($rootScope.nodeId);
-            console.log($scope.arch );
-        }]);
 
+    // Obtain the current platform node basic info 
+    .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
+        function($rootScope, $scope, dashboardService){  
+            function success(data){
+                $scope.nodeInfo = data;
+                console.log($scope.nodeInfo);               
+            };
+            function error(err){
+                console.log("Can't get data!");
+            };
+            dashboardService.getNodeInfo($rootScope.nodeId).then(success, error);
+        }]);

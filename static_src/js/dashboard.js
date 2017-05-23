@@ -1,23 +1,19 @@
-// angular.module('vultrainer.dashboard', [])
-// 	.factory('dashboardService', function($http){
-// 		var service = {};
-// 		service.getNodeInfo = function(nodeId){
-// 			var arch = '';
-// 			$http.get("/" + nodeId + "/dashboard/nodeinfo")
-// 				.then(function (response) {
-//                     arch = response.data.arch;
-//               	});
-//             return arch;
-// 		};
-// 	});
-
+//The module serve dashboard html 
 angular.module('vultrainer.dashboard', [])
-    .service('dashboardService', function ($http) {
-        this.arch = '';
-        this.getNodeInfo = function (nodeId) {
-        	   $http.get("/" + nodeId + "/dashboard/nodeinfo")
-		.then(function (response) {
-                         return  response.data.arch;
-              	});  
-        };
-    });
+	// The service to obtain platform node basic info 
+	.factory('dashboardService', ['$http', '$q', function($http, $q){
+		var service = {};
+		service.getNodeInfo = function(nodeId){
+			var deffered = $q.defer();
+
+			$http.get("/" + nodeId + "/dashboard/nodeinfo")
+				.then(function(response){
+					deffered.resolve(response.data);
+				}, function(response){
+					deffered.reject(response.data);
+				});
+			return deffered.promise;
+
+		};
+		return service;
+	}]);
