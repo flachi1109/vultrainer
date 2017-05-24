@@ -12,9 +12,7 @@ from app.auxiliary.ColorLogger import ColorLogger
 
 
 # config clogger
-config = ConfigParser.ConfigParser()
-config.read('app/extra.conf')
-clogger = ColorLogger(level=config.get('logger', 'level'))
+clogger = ColorLogger(conf='app/extra.conf')
 
 
 class PlatformNodeViews(APIView):
