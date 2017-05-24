@@ -1,25 +1,3 @@
-/*platform node summary infomation in dashboard*/
-.summary-ico{
-	width: 20%;
-	float: left;
-	height: 57px
-}
-.summary-info{
-	width: 80%;
-	float: left;
-}
-.summary-amount{
-	float: left;
-	width: 60%;
-}
-.summary-amount div{
-	line-height: 2.05!important;
-}
-.summary-status{
-	float: left;
-	width: 40%;
-}
-
 .left-radius-4{
 	border-radius: 4px 0px 0px 4px!important;
 }

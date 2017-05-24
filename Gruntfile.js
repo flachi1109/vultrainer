@@ -5,10 +5,10 @@ module.exports = function(grunt) {
 
 		// concat to merge js&css files
 		concat: {
-			options: {
-				// define separator for the merged files
-				separator: ';'
-			},
+			// options: {
+			// 	// define separator for the merged files
+			// 	separator: ';'
+			// },
 			jsConcat: {
 				src: ['static_src/js/*.js'],
 				dest: 'static_src/<%= pkg.name %>_all.js'

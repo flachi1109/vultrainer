@@ -14,6 +14,11 @@ angular.module('vultrainer', [
             templateUrl: '/dashboard/',
             controller: 'vultrainerController'
         });
+        $stateProvider.state('vulnContainer', {
+            url: '/vulnContainer/',
+            templateUrl: '/vulnContainer/',
+            controller: 'vultrainerController'
+        });
     }])
     //Obtain the current platform node ID
     .controller('vultrainerController', ['$rootScope', '$scope', 'nodeService', function($rootScope, $scope, nodeService){
@@ -26,8 +31,7 @@ angular.module('vultrainer', [
     .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
         function($rootScope, $scope, dashboardService){  
             function success(data){
-                $scope.nodeInfo = data;
-                console.log($scope.nodeInfo);               
+                $scope.nodeInfo = data;              
             };
             function error(err){
                 console.log("Can't get data!");

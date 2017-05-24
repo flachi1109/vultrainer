@@ -17,7 +17,8 @@ angular.module('vultrainer.dashboard', [])
 		};
 		return service;
 	}]);
-;//The module serve platform node related operations
+
+//The module serve platform node related operations
 angular.module('vultrainer.platformNode', [])
 	// The service to obtain platform node ID
     .service('nodeService', function () {
@@ -31,7 +32,8 @@ angular.module('vultrainer.platformNode', [])
             return this.nodeId;
         };
     });
-;//The main module which can specify the default path and controll all function.
+
+//The main module which can specify the default path and controll all function.
 angular.module('vultrainer', [
     'ui.router',
     'vultrainer.platformNode',
@@ -47,6 +49,11 @@ angular.module('vultrainer', [
             templateUrl: '/dashboard/',
             controller: 'vultrainerController'
         });
+        $stateProvider.state('vulnContainer', {
+            url: '/vulnContainer/',
+            templateUrl: '/vulnContainer/',
+            controller: 'vultrainerController'
+        });
     }])
     //Obtain the current platform node ID
     .controller('vultrainerController', ['$rootScope', '$scope', 'nodeService', function($rootScope, $scope, nodeService){
@@ -59,8 +66,7 @@ angular.module('vultrainer', [
     .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
         function($rootScope, $scope, dashboardService){  
             function success(data){
-                $scope.nodeInfo = data;
-                console.log($scope.nodeInfo);               
+                $scope.nodeInfo = data;              
             };
             function error(err){
                 console.log("Can't get data!");

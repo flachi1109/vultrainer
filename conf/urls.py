@@ -29,6 +29,7 @@ urlpatterns = [
     # html templates url
     url(r'^$', TemplateView.as_view(template_name='index.html')),
     url(r'^dashboard/', TemplateView.as_view(template_name='dashboard.html')),
+    url(r'^vulnContainer/', TemplateView.as_view(template_name='vuln_container.html')),
 
     # API url
     url(r'(?P<node_id>\d+)/', include('app.urls')),

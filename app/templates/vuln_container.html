@@ -1,0 +1,248 @@
+{% load staticfiles %}
+<!-- page specific plugin scripts -->
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.bootstrap.js' %}"></script>
+
+<div class="breadcrumbs" id="breadcrumbs">
+	<script type="text/javascript">
+		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+	</script>
+
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<a href="#">首页</a>
+		</li>
+		<li class="active">漏洞靶机</li>
+	</ul><!-- .breadcrumb -->
+
+	<div class="nav-search" id="nav-search">
+		<form class="form-search">
+			<span class="input-icon">
+				<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+				<i class="icon-search nav-search-icon"></i>
+			</span>
+		</form>
+	</div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+	<div class="page-header">
+		<h1>
+			漏洞靶机
+			<small>
+				<i class="icon-double-angle-right"></i>
+				 靶机列表
+			</small>
+		</h1>
+	</div><!-- /.page-header -->
+
+	<div class="row">
+		<div class="col-xs-12 col-md-12">
+			<!-- PAGE CONTENT BEGINS -->
+
+			<div class="alert alert-block alert-success">
+				<button type="button" class="close" data-dismiss="alert">
+					<i class="fa fa-remove"></i>
+				</button>
+
+				<i class="icon-ok green"></i>
+
+				欢迎使用
+				<strong class="green">
+					Ace后台管理系统
+					<small>(v1.2)</small>
+				</strong>
+				,轻量级好用的后台管理系统模版.	
+			</div>
+
+			<div class="row">
+				<div class="space-6"></div>
+				<div class="col-xs-12 col-md-12">
+                    <div class="table-header color-dark-grey">
+                    	<i class="fa fa-bug"></i>
+                        漏洞靶机列表
+                    </div>
+                    <div class="table-responsive">
+                    	<div class="dataTables_wrapper">
+                    		<div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-sm btn-success left-radius-4">
+                                        <i class="fa fa-play" aria-hidden='true'></i>
+                                        启动
+                                    </button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="fa fa-stop"></i>
+                                        停止
+                                    </button>
+                                    <button class="btn btn-sm btn-info">
+                                        <i class="fa fa-refresh"></i>
+                                        重启
+                                    </button>
+                                    <button class="btn btn-sm btn-info">
+                                        <i class="fa fa-pause"></i>
+                                        暂停
+                                    </button>
+                                    <button class="btn btn-sm btn-info">
+                                        <i class="fa fa-play"></i>
+                                        恢复
+                                    </button>
+                                    <button class="btn btn-sm btn-danger right-radius-4">
+                                        <i class="fa fa-trash"></i>
+                                        删除
+                                    </button>
+                                    <button class="btn btn-sm btn-primary all-radius-4 float-right">
+                                        <i class="fa fa-plus"></i>
+                                        添加新靶机
+                                    </button>
+                    	
+                                </div>
+                    		</div>
+                    	</div>
+                        <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="center">
+                                        <label>
+                                            <input type="checkbox" class="ace" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </th>
+                                    <th>状态</th>
+                                    <th>靶机名称</th>
+                                    <th class="hidden-480">漏洞描述</th>
+
+                                    <th>
+                                        <i class="icon-time bigger-110 hidden-480"></i>
+                                        IP地址
+                                    </th>
+                                    <th class="hidden-480">对外端口</th>
+
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td class="center">
+                                        <label>
+                                            <input type="checkbox" class="ace" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                    <td>
+                                        <a href="#">once.com</a>
+                                    </td>
+                                    <td>$20</td>
+                                    <td class="hidden-480">1,400</td>
+                                    <td>Apr 04</td>
+
+                                    <td class="hidden-480">
+                                        <span class="label label-sm label-info arrowed arrowed-righ">Sold</span>
+                                    </td>
+
+                                    <td>
+                                        <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                                            <a class="blue" href="#">
+                                                <i class="icon-zoom-in bigger-130"></i>
+                                            </a>
+
+                                            <a class="green" href="#">
+                                                <i class="icon-pencil bigger-130"></i>
+                                            </a>
+
+                                            <a class="red" href="#">
+                                                <i class="icon-trash bigger-130"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                            <div class="inline position-relative">
+                                                <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-caret-down icon-only bigger-120"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+                                                    <li>
+                                                        <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+                                                            <span class="blue">
+                                                                <i class="icon-zoom-in bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+                                                            <span class="green">
+                                                                <i class="icon-edit bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+                                                            <span class="red">
+                                                                <i class="icon-trash bigger-120"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+				</div>
+			</div><!-- /row -->
+
+			<!-- Node key resource amount -->
+			<div class="hr hr32 hr-dotted"></div>
+			<div class="row">
+				<div class="col-xs-12 col-md-12">
+
+				</div>
+			</div>
+
+		</div><!-- /.col -->
+	</div><!-- /.row -->
+</div><!-- /.page-content -->
+<script type="text/javascript">
+    jQuery(function($) {
+        var oTable1 = $('#sample-table-2').dataTable(
+        {
+        "aoColumns": [
+          { "bSortable": false },
+          null, null,null, null, null,
+          { "bSortable": false }
+        ] } 
+        );
+        
+        $('table th input:checkbox').on('click' , function(){
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function(){
+                this.checked = that.checked;
+                $(this).closest('tr').toggleClass('selected');
+            });
+                
+        });
+    
+    
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+    
+            var off2 = $source.offset();
+            var w2 = $source.width();
+    
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+    })
+</script>
