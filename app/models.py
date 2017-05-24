@@ -19,4 +19,8 @@ class PlatformNode(models.Model):
     node_name = models.CharField(max_length=30, null=False)
     connection = models.CharField(max_length=50, null=False)
 
+class VulnContainer(models.Model):
+
+    container_id = models.CharField(max_length=64, null=False)
+    description = models.CharField(max_length=500, null=False)
 
