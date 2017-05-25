@@ -11,9 +11,9 @@ class PlatformNodeHandeler(BaseHandler):
     PlatformNodeHandler collects environment info of the platform node
     '''
 
-    def __init__(self, pltfnode_id, clogger_conf='app/extra.conf'):
+    def __init__(self, pltfnode_id):
 
-        super(PlatformNodeHandeler,self).__init__(pltfnode_id, clogger_conf)
+        super(PlatformNodeHandeler,self).__init__(pltfnode_id)
 
         self.os_type = platform.uname()[0]
         self.sys_name = platform.uname()[1]

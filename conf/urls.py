@@ -19,8 +19,7 @@ from django.conf import settings
 from django.views.generic import TemplateView
 # from django.contrib import admin
 
-from app import views
-from app import urls
+from app.views import VulnContainerListViews
 
 # will be deleted
 from app import tests
@@ -35,7 +34,9 @@ urlpatterns = [
     url(r'(?P<node_id>\d+)/', include('app.urls')),
 
     # will be deleted
-    url(r'^test/', TemplateView.as_view(template_name='test.html'))
+
+    url(r'^test/', TemplateView.as_view(template_name='test.html')),
+    url(r'^viewset/', VulnContainerListViews.as_view())
 ]
 
 # add static resource url

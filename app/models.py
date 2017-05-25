@@ -20,7 +20,9 @@ class PlatformNode(models.Model):
     connection = models.CharField(max_length=50, null=False)
 
 class VulnContainer(models.Model):
-
+    '''
+    VulnContainer represents the vulnerability information of containers
+    '''
     container_id = models.CharField(max_length=64, null=False)
     description = models.CharField(max_length=500, null=False)
 
