@@ -29,6 +29,7 @@ class PlatformNodeViews(APIView):
         platform_node_seriarlizer = PlatformNodeSerailizer(platform_node_info)
 
         return Response(platform_node_seriarlizer.data)
+
     def post(self, request):
         self.get(request)
 

@@ -63,7 +63,7 @@
                     	<i class="fa fa-bug"></i>
                         漏洞靶机列表
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" ng-controller='vulnContainerController'>
                     	<div class="dataTables_wrapper">
                     		<div class="row">
                                 <div class="col-sm-12">
@@ -99,7 +99,7 @@
                                 </div>
                     		</div>
                     	</div>
-                        <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                        <table id="container-table" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th class="center">
@@ -121,25 +121,30 @@
                                     <th>功能</th>
                                 </tr>
                             </thead>
-
+                            {% verbatim %}
                             <tbody>
-                                <tr>
+                                <tr ng-repeat="vulnContainer in vulnContainers">
                                     <td class="center">
                                         <label>
-                                            <input type="checkbox" class="ace" />
+                                            <input type="checkbox" class="ace" ng-model="vulnContainer.checked" ng-change="selectContainer(vulnContainer)"/>
                                             <span class="lbl"></span>
                                         </label>
                                     </td>
 
                                     <td>
-                                        <a href="#">once.com</a>
+                                        <span class="label label-lg" ng-class="{'running':'label-success', 'paused':'label-warning', 'exited':'label-danger'}[vulnContainer.status]">{{ vulnContainer.status }}</span>
                                     </td>
-                                    <td>$20</td>
-                                    <td class="hidden-480">1,400</td>
-                                    <td>Apr 04</td>
+                                    <td>{{ vulnContainer.name }}</td>
+                                    <td class="hidden-480">{{ vulnContainer.description }}</td>
+                                    <td ng-if="vulnContainer.access_ip.length == 0">-</td>
+                                    <td ng-if="vulnContainer.access_ip.length > 0">{{ vulnContainer.access_ip }}</td>
 
                                     <td class="hidden-480">
-                                        <span class="label label-sm label-info arrowed arrowed-righ">Sold</span>
+                                    	{{ vulnContainer.exposed_port.length }}
+                                    	<span ng-if="vulnContainer.exposed_port.length == 0 || vulnContainer.exposed_port == null ">-</span>
+                                    	<span class='label arrowed arrowed-right' ng-repeat="(innerPort, outterPort) in vulnContainer.exposed_port" title="{{ innerPort | retProto | uppercase }}"> 
+                                    		{{ innerPort | retInnerPort }}:{{ outterPort[0].HostPort }}
+                                    	</span>
                                     </td>
 
                                     <td>
@@ -193,6 +198,7 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            {% endverbatim %}
                         </table>
                     </div>
 				</div>

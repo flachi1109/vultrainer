@@ -20,6 +20,9 @@
 	width: 40%;
 }
 
+#container-table th{
+	color: #337ab7!important;
+}
 .left-radius-4{
 	border-radius: 4px 0px 0px 4px!important;
 }

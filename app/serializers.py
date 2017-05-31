@@ -14,7 +14,7 @@ class PlatformNodeSerailizer(serializers.Serializer):
 
 class VulnContainerSerializer(serializers.Serializer):
     '''
-    Join the VulnContainer Model with Container object of docker, and transform the data to serialization
+    Combine the VulnContainer Model with Container object of docker, and transform the data to serialization
     '''
     id = serializers.CharField()
     name = serializers.CharField()
@@ -34,9 +34,7 @@ class VulnContainerSerializer(serializers.Serializer):
 
     def get_exposed_port(self, container):
         try:
-            inner_port = container.attrs['NetworkSettings']['Ports'].keys()[0]
-            outter_port = container.attrs['NetworkSettings']['Ports'][inner_port]['HostPort']
-            exposed_port = inner_port + ':' + outter_port
+            exposed_port = container.attrs['NetworkSettings']['Ports']
         except AttributeError:
             exposed_port = ''
 
