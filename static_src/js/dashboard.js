@@ -1,5 +1,5 @@
 //The module serve dashboard html 
-angular.module('vultrainer.dashboard', [])
+angular.module('dashboard', [])
 	// The service to obtain platform node basic info 
 	.factory('dashboardService', ['$http', '$q', function($http, $q){
 		var service = {};

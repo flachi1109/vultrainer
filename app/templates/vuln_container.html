@@ -104,7 +104,7 @@
                                 <tr>
                                     <th class="center">
                                         <label>
-                                            <input type="checkbox" class="ace" />
+                                            <input type="checkbox" class="ace"/>
                                             <span class="lbl"></span>
                                         </label>
                                     </th>
@@ -136,8 +136,12 @@
                                     </td>
                                     <td>{{ vulnContainer.name }}</td>
                                     <td class="hidden-480">{{ vulnContainer.description }}</td>
-                                    <td ng-if="vulnContainer.access_ip.length == 0">-</td>
-                                    <td ng-if="vulnContainer.access_ip.length > 0">{{ vulnContainer.access_ip }}</td>
+                                    <td>
+                                    	<span ng-if="vulnContainer.access_ip.length == 0">-</span>
+                                    	<span ng-if="vulnContainer.access_ip.length > 0">
+                                    		{{ vulnContainer.access_ip }}
+                                    	</span>
+                                    </td>
 
                                     <td class="hidden-480">
                                     	{{ vulnContainer.exposed_port.length }}
@@ -216,15 +220,12 @@
 	</div><!-- /.row -->
 </div><!-- /.page-content -->
 <script type="text/javascript">
-    jQuery(function($) {
-        var oTable1 = $('#sample-table-2').dataTable(
-        {
-        "aoColumns": [
-          { "bSortable": false },
-          null, null,null, null, null,
-          { "bSortable": false }
-        ] } 
-        );
+    $(function() {
+        var oTable1 = $('#container-table').dataTable({       	
+        	"aoColumns": [
+          	{"bSortable":false},{"bSortable":false},{"bSortable":false, "bSearchable":true},{"bSortable":false, "bSearchable":true}, {"bSortable":false}, {"bSortable":false},{"bSortable":false}
+        	]
+        });
         
         $('table th input:checkbox').on('click' , function(){
             var that = this;

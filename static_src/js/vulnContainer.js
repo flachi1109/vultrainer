@@ -1,5 +1,5 @@
 //The module serve vulnContainer html 
-angular.module('vultrainer.vulnContainer', [])
+angular.module('vulnContainer', [])
 	// The service to obtain vuln container information
 	.factory('vulnContainerService', ['$http', '$q', function($http, $q){
 		var service = {};

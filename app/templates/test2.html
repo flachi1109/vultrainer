@@ -1,0 +1,39 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test docker</title>
+    <script src="{% static 'js/angular/angular.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/angular-ui-router.min.js' %}" type="text/javascript"></script>>
+</head>
+<body>
+     <div ng-app="myApp" ng-controller="siteCtrl" > 
+            <div ui-view></div> <!-- 视图 --> 
+            <div>
+            {%  verbatim%}
+                {{ arch }}  
+            {% endverbatim %}
+            </div>
+    </div> 
+</body> 
+<script type="text/javascript"> 
+        angular.module('myApp', ['ui.router'])
+            .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
+                            $urlRouterProvider.otherwise('/1/dashboard/test');
+
+                            $stateProvider.state('home', {
+                                    url: '/1/dashboard/test',
+                                    template: '<div>hello test</div>'
+                            });
+            }]);
+            
+            angular.module('myApp', []).controller('siteCtrl', function($scope, $http) {
+                    $http.get("/1/dashboard/nodeinfo")
+                    .then(function (response) {
+                        $scope.arch = response.data.arch;
+                    });
+            });
+            
+</script>
+</html>

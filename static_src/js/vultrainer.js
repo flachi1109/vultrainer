@@ -1,9 +1,9 @@
 //The main module which can specify the default path and controll all function.
 angular.module('vultrainer', [
     'ui.router',
-    'vultrainer.platformNode',
-    'vultrainer.dashboard',
-    'vultrainer.vulnContainer'
+    'platformNode',
+    'dashboard',
+    'vulnContainer'
     ])
     // specify the default path
     .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
@@ -49,13 +49,22 @@ angular.module('vultrainer', [
             };
             vulnContainerService.getVulnContainerList($rootScope.nodeId).then(success, error);
             
-            $scope.containerChecked = [];
+            $scope.containerCheckeds = [];
             $scope.selectContainer = function(vulnContainer){
                 console.log(vulnContainer.checked);
-                if (vulnContainer.checked == false)
-                    vulnContainer.checked = true;
-                else
-                    vulnContainer.checked = false;
+                if (vulnContainer.checked == true) {
+                    $scope.containerCheckeds.push(vulnContainer.id);
+                    console.log($scope.containerCheckeds);
+                }
+                else{
+                    for (var i=0; i<$scope.containerCheckeds.length; i++){
+                        if($scope.containerCheckeds[i] == vulnContainer.id){
+                            $scope.containerCheckeds.splice(i, 1);
+                        }
+                    }
+                    console.log($scope.containerCheckeds);                    
+                }
+
             }
 
         }]);

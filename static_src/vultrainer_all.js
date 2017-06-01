@@ -1,5 +1,5 @@
 //The module serve dashboard html 
-angular.module('vultrainer.dashboard', [])
+angular.module('dashboard', [])
 	// The service to obtain platform node basic info 
 	.factory('dashboardService', ['$http', '$q', function($http, $q){
 		var service = {};
@@ -19,7 +19,7 @@ angular.module('vultrainer.dashboard', [])
 	}]);
 
 //The module serve platform node related operations
-angular.module('vultrainer.platformNode', [])
+angular.module('platformNode', [])
 	// The service to obtain platform node ID
     .service('nodeService', function () {
         this.nodeId = '';
@@ -34,7 +34,7 @@ angular.module('vultrainer.platformNode', [])
     });
 
 //The module serve vulnContainer html 
-angular.module('vultrainer.vulnContainer', [])
+angular.module('vulnContainer', [])
 	// The service to obtain vuln container information
 	.factory('vulnContainerService', ['$http', '$q', function($http, $q){
 		var service = {};
@@ -65,9 +65,9 @@ angular.module('vultrainer.vulnContainer', [])
 //The main module which can specify the default path and controll all function.
 angular.module('vultrainer', [
     'ui.router',
-    'vultrainer.platformNode',
-    'vultrainer.dashboard',
-    'vultrainer.vulnContainer'
+    'platformNode',
+    'dashboard',
+    'vulnContainer'
     ])
     // specify the default path
     .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
@@ -113,13 +113,22 @@ angular.module('vultrainer', [
             };
             vulnContainerService.getVulnContainerList($rootScope.nodeId).then(success, error);
             
-            $scope.containerChecked = [];
+            $scope.containerCheckeds = [];
             $scope.selectContainer = function(vulnContainer){
                 console.log(vulnContainer.checked);
-                if (vulnContainer.checked == false)
-                    vulnContainer.checked = true;
-                else
-                    vulnContainer.checked = false;
+                if (vulnContainer.checked == true) {
+                    $scope.containerCheckeds.push(vulnContainer.id);
+                    console.log($scope.containerCheckeds);
+                }
+                else{
+                    for (var i=0; i<$scope.containerCheckeds.length; i++){
+                        if($scope.containerCheckeds[i] == vulnContainer.id){
+                            $scope.containerCheckeds.splice(i, 1);
+                        }
+                    }
+                    console.log($scope.containerCheckeds);                    
+                }
+
             }
 
         }]);

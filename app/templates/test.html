@@ -1,39 +1,71 @@
-{% load staticfiles %}
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>test docker</title>
-    <script src="{% static 'js/angular/angular.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/angular/angular-ui-router.min.js' %}" type="text/javascript"></script>>
-</head>
-<body>
-     <div ng-app="myApp" ng-controller="siteCtrl" > 
-            <div ui-view></div> <!-- 视图 --> 
-            <div>
-            {%  verbatim%}
-                {{ arch }}  
-            {% endverbatim %}
-            </div>
-    </div> 
-</body> 
-<script type="text/javascript"> 
-        angular.module('myApp', ['ui.router'])
-            .config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $urlRouterProvider){
-                            $urlRouterProvider.otherwise('/1/dashboard/test');
-
-                            $stateProvider.state('home', {
-                                    url: '/1/dashboard/test',
-                                    template: '<div>hello test</div>'
-                            });
-            }]);
-            
-            angular.module('myApp', []).controller('siteCtrl', function($scope, $http) {
-                    $http.get("/1/dashboard/nodeinfo")
-                    .then(function (response) {
-                        $scope.arch = response.data.arch;
-                    });
-            });
-            
-</script>
-</html>
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <title>Document</title>  
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script> 
+</head>  
+<body>  
+<div ng-app="tableExample">  
+    <div ng-controller="Ctrl">  
+        <button ng-click="addData()">Add Data</button>  
+         <h2>This table uses columns defined in controller</h2>  
+        <table my-table options="options">  
+        </table>  
+    </div>  
+</div>  
+  
+<script>
+angular.module('tableExample', [])  
+  .directive('myTable', function () {  
+    return {  
+        restrict: 'E, A, C',  
+        link: function (scope, element, attrs, controller) {  
+            var dataTable = element.dataTable(scope.options);  
+  
+            scope.$watch('options.aaData', handleModelUpdates, true);  
+  
+            function handleModelUpdates(newData) {  
+                var data = newData || null;  
+                if (data) {  
+                    dataTable.fnClearTable();  
+                    dataTable.fnAddData(data);  
+                }  
+            }  
+        },  
+        scope: {  
+            options: "="  
+        }  
+    };  
+  })  
+  .controller('Ctrl' , function ($scope){  
+    $scope.options = {  
+        aoColumns: [{  
+            "sTitle": "Surname"  
+        }, {  
+            "sTitle": "First Name"  
+        }],  
+        aoColumnDefs: [{  
+            "bSortable": false,  
+            "aTargets": [0, 1]  
+        }],  
+        bJQueryUI: true,  
+        bDestroy: true,  
+        aaData: [  
+            ["Webber", "Adam"]  
+        ]  
+    };  
+  
+    $scope.addData = function () {  
+        $scope.counter = $scope.counter + 1;  
+        $scope.options.aaData.push([$scope.counter, $scope.counter * 2]);  
+    };  
+  
+    $scope.counter = 0;  
+  })  
+</script>  
+  
+</body>  
+</html>  
