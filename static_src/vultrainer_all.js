@@ -97,14 +97,23 @@ angular.module('vulnContainer', ['ngTable'])
             $scope.selectContainer = function(vulnContainer){
                 if (vulnContainer.checked == true) {
                     $scope.containerCheckeds.push(vulnContainer.id);
+                    console.log($scope.containerCheckeds);
                 }
                 else{
                     for (var i=0; i<$scope.containerCheckeds.length; i++){
                         if($scope.containerCheckeds[i] == vulnContainer.id){
                             $scope.containerCheckeds.splice(i, 1);
                         }
-                    }                   
+                    }
+                    console.log($scope.containerCheckeds);                   
                 }
+            };
+
+            $scope.selectAllItems = function(allChecked){
+            	console.log(allChecked);
+            	if (allChecked == true){
+            		$scope.vulnContainer
+            	}
             };
         }
    	]);
