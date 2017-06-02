@@ -1,5 +1,11 @@
 from rest_framework import serializers
+from django.core.exceptions import ObjectDoesNotExist
+
 from models import VulnContainer
+from app.auxiliary.ColorLogger import ColorLogger
+
+# config clogger
+clogger = ColorLogger(conf='app/extra.conf')
 
 class PlatformNodeSerailizer(serializers.Serializer):
     '''
@@ -25,11 +31,21 @@ class VulnContainerSerializer(serializers.Serializer):
 
     # Get the vulnerability description from the database by container id
     def get_description(self, container):
-        description = VulnContainer.objects.get(container_id=container.id).description
+        try:
+            description = VulnContainer.objects.get(container_id=container.id).description
+        except ObjectDoesNotExist as err:
+            clogger.debug(err)
+            clogger.error('No descritpion yet! ')
+            description = 'No description!'
+
         return description
 
     def get_access_ip(self, container):
-        access_ip = container.attrs['NetworkSettings']['Networks']['bridge']['IPAddress']
+        try:
+            bridge_name = container.attrs['NetworkSettings']['Networks'].keys()[0]
+            access_ip = container.attrs['NetworkSettings']['Networks'][bridge_name]['IPAddress']
+        except KeyError:
+            access_ip = 'error!'
         return access_ip
 
     def get_exposed_port(self, container):

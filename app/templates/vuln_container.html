@@ -38,20 +38,11 @@
 		</h1>
 	</div><!-- /.page-header -->
 
-	<div class="row">
+	<div class="row" ng-controller='vulnContainerController as vulnCtrl'>
 		<div class="col-xs-12 col-md-12">
 			<!-- PAGE CONTENT BEGINS -->
 
-			<div class="alert alert-block alert-danger no-display">
-				<button type="button" class="close" data-dismiss="alert">
-					<i class="fa fa-remove"></i>
-				</button>
-
-				<i class="icon-ok green"></i>
-
-				<strong ng-model="errorType"></strong>
-				<small ng-model="errorDetail"></small>	
-			</div>
+			{% include 'alert_block.html' %}
 
 			<div class="row">
 				<div class="space-6"></div>
@@ -60,7 +51,7 @@
                     	<i class="fa fa-bug"></i>
                         漏洞靶机列表
                     </div>
-                    <div class="table-responsive" ng-controller='vulnContainerController as vulnCtrl'>
+                    <div class="table-responsive" >
                     	<div class="dataTables_wrapper">
                     		<div class="row">
                                 <div class="col-sm-12">

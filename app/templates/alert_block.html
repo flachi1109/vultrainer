@@ -1,0 +1,11 @@
+<div class="alert alert-block alert-danger" ng-show='alertShown'>
+				<button type="button" class="close" data-dismiss="alert">
+					<i class="fa fa-remove"></i>
+				</button>
+
+				<i class="icon-ok green"></i>
+				{% verbatim %}
+				<strong>{{ errorType }}</strong>
+				<small>{{ errorDetail }}</small>	
+				{% endverbatim %}
+			</div>

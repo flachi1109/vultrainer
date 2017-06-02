@@ -73,8 +73,8 @@ angular.module('vulnContainer', ['ngTable'])
 	})
 
 	//vulnerale container information
-    .controller('vulnContainerController', ['$rootScope', '$scope', 'vulnContainerService', 'NgTableParams',
-        function($rootScope, $scope, vulnContainerService, NgTableParams){  
+    .controller('vulnContainerController', ['$rootScope', '$scope', '$timeout','vulnContainerService', 'NgTableParams',
+        function($rootScope, $scope, $timeout, vulnContainerService, NgTableParams){  
            	var self = this;
            	//retrieve vulnerale container information
             function success(data){
@@ -85,7 +85,10 @@ angular.module('vulnContainer', ['ngTable'])
                 );	         
             };
             function error(err){
-                console.log("Can't get data!");
+            	$scope.errorType = 'Retrieve Data Error : ';
+            	// $scope.errorDetail = 'Can not get data!';
+            	$scope.errorDetail = err;
+                $scope.alertShown = true;
             }; 
             vulnContainerService.getVulnContainerList($rootScope.nodeId).then(success, error);
 
