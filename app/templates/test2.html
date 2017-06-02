@@ -4,18 +4,32 @@
 <html>
 <head>
     <title>test docker</title>
-    <script src="{% static 'js/angular/angular.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/angular/angular-ui-router.min.js' %}" type="text/javascript"></script>>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script type="text/javascript" src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+ <!--    <script src="{% static 'js/angular/angular.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/angular-ui-router.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/ng-table.min.js' %}" type="text/javascript"></script> -->
 </head>
 <body>
-     <div ng-app="myApp" ng-controller="siteCtrl" > 
-            <div ui-view></div> <!-- 视图 --> 
+     <!-- <div ng-app="myApp" ng-controller="siteCtrl" > 
+            <div ui-view></div> 
             <div>
             {%  verbatim%}
                 {{ arch }}  
             {% endverbatim %}
             </div>
-    </div> 
+    </div>  -->
+    {% verbatim%}
+    <div ng-app="ngApp" ng-controller="ngCtrl">
+        <table ng-table="testTableParams" show-filter="true">
+            <tr ng-repeat="user in $data">
+                <td title="'Name'" filter="{name: 'text'}" sortable="'name'">{{ user.name }}</td>
+                <td title="'Age'" filter="{Age: 'number'}" sortable="'age'">{{ user.age }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endverbatim %}
 </body> 
 <script type="text/javascript"> 
         angular.module('myApp', ['ui.router'])
@@ -34,6 +48,12 @@
                         $scope.arch = response.data.arch;
                     });
             });
+            angular.module("ngApp", ["ngTable"])
+                .controller("ngCtrl", ["NgTableParams","$scope", function(NgTableParams, $scope){
+                    var self =  this;
+                    var data = [{name:"Moroni", age:50}];
+                    $scope.testTableParams = new NgTableParams({}, {dataset:data});
+                }]);
             
 </script>
 </html>

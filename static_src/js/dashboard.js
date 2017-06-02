@@ -1,19 +1,13 @@
 //The module serve dashboard html 
-angular.module('dashboard', [])
-	// The service to obtain platform node basic info 
-	.factory('dashboardService', ['$http', '$q', function($http, $q){
-		var service = {};
-		service.getNodeInfo = function(nodeId){
-			var deffered = $q.defer();
-
-			$http.get("/" + nodeId + "/dashboard/nodeinfo")
-				.then(function(response){
-					deffered.resolve(response.data);
-				}, function(response){
-					deffered.reject(response.data);
-				});
-			return deffered.promise;
-
-		};
-		return service;
-	}]);
+angular.module('dashboard', ['platformNode'])
+	// Obtain the current platform node basic info 
+    .controller('nodeInfoController', ['$rootScope', '$scope', 'nodeService', 
+        function($rootScope, $scope, nodeService){  
+            function success(data){
+                $scope.nodeInfo = data;              
+            };
+            function error(err){
+                console.log("Can't get data!");
+            };
+            nodeService.getNodeInfo($rootScope.nodeId).then(success, error);
+    }]);

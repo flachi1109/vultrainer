@@ -3,6 +3,7 @@
 <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'js/jquery.dataTables.bootstrap.js' %}"></script>
 
+
 <div class="breadcrumbs" id="breadcrumbs">
 	<script type="text/javascript">
 		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -41,19 +42,15 @@
 		<div class="col-xs-12 col-md-12">
 			<!-- PAGE CONTENT BEGINS -->
 
-			<div class="alert alert-block alert-success">
+			<div class="alert alert-block alert-danger no-display">
 				<button type="button" class="close" data-dismiss="alert">
 					<i class="fa fa-remove"></i>
 				</button>
 
 				<i class="icon-ok green"></i>
 
-				欢迎使用
-				<strong class="green">
-					Ace后台管理系统
-					<small>(v1.2)</small>
-				</strong>
-				,轻量级好用的后台管理系统模版.	
+				<strong ng-model="errorType"></strong>
+				<small ng-model="errorDetail"></small>	
 			</div>
 
 			<div class="row">
@@ -63,7 +60,7 @@
                     	<i class="fa fa-bug"></i>
                         漏洞靶机列表
                     </div>
-                    <div class="table-responsive" ng-controller='vulnContainerController'>
+                    <div class="table-responsive" ng-controller='vulnContainerController as vulnCtrl'>
                     	<div class="dataTables_wrapper">
                     		<div class="row">
                                 <div class="col-sm-12">
@@ -91,20 +88,22 @@
                                         <i class="fa fa-trash"></i>
                                         删除
                                     </button>
-                                    <button class="btn btn-sm btn-primary all-radius-4 float-right">
+                                    <button class="btn btn-sm btn-primary all-radius-4">
                                         <i class="fa fa-plus"></i>
                                         添加新靶机
                                     </button>
+
+                                    <input type="text" placeholder="Filter..." ng-model="filterText" class="float-right">
                     	
                                 </div>
                     		</div>
                     	</div>
-                        <table id="container-table" class="table table-striped table-bordered table-hover">
+                        <table ng-table='vulnCtrl.containerTableParams' template-pagination="custom/pager" id="container-table" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th class="center">
                                         <label>
-                                            <input type="checkbox" class="ace"/>
+                                            <input type="checkbox" class="ace" ng-model="allChecked" ng-change="selectAll"/>
                                             <span class="lbl"></span>
                                         </label>
                                     </th>
@@ -123,7 +122,7 @@
                             </thead>
                             {% verbatim %}
                             <tbody>
-                                <tr ng-repeat="vulnContainer in vulnContainers">
+                                <tr ng-repeat="vulnContainer in $data | filter:filterText">
                                     <td class="center">
                                         <label>
                                             <input type="checkbox" class="ace" ng-model="vulnContainer.checked" ng-change="selectContainer(vulnContainer)"/>
@@ -132,7 +131,7 @@
                                     </td>
 
                                     <td>
-                                        <span class="label label-lg" ng-class="{'running':'label-success', 'paused':'label-warning', 'exited':'label-danger'}[vulnContainer.status]">{{ vulnContainer.status }}</span>
+                                        <span class="label label-lg" ng-class="{'running':'label-success', 'paused':'label-warning', 'exited':'label-danger', 'created':'label-info'}[vulnContainer.status]">{{ vulnContainer.status }}</span>
                                     </td>
                                     <td>{{ vulnContainer.name }}</td>
                                     <td class="hidden-480">{{ vulnContainer.description }}</td>
@@ -219,37 +218,22 @@
 		</div><!-- /.col -->
 	</div><!-- /.row -->
 </div><!-- /.page-content -->
-<script type="text/javascript">
-    $(function() {
-        var oTable1 = $('#container-table').dataTable({       	
-        	"aoColumns": [
-          	{"bSortable":false},{"bSortable":false},{"bSortable":false, "bSearchable":true},{"bSortable":false, "bSearchable":true}, {"bSortable":false}, {"bSortable":false},{"bSortable":false}
-        	]
-        });
-        
-        $('table th input:checkbox').on('click' , function(){
-            var that = this;
-            $(this).closest('table').find('tr > td:first-child input:checkbox')
-            .each(function(){
-                this.checked = that.checked;
-                $(this).closest('tr').toggleClass('selected');
-            });
-                
-        });
-    
-    
-        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        function tooltip_placement(context, source) {
-            var $source = $(source);
-            var $parent = $source.closest('table')
-            var off1 = $parent.offset();
-            var w1 = $parent.width();
-    
-            var off2 = $source.offset();
-            var w2 = $source.width();
-    
-            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-            return 'left';
-        }
-    })
+
+<script type="text/ng-template" id="custom/pager">
+    <ul class="pager ng-cloak">
+      <li ng-repeat="page in pages"
+            ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+            ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+        <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+        <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+      </li>
+        <li> 
+        <div class="btn-group float-right">
+            <button type="button" ng-class="{'active':params.count() == 5}" ng-click="params.count(5)" class="btn btn-light btn-sm">5</button>
+            <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-light btn-sm">10</button>
+            <button type="button" ng-class="{'active':params.count() == 20}" ng-click="params.count(20)" class="btn btn-light btn-sm">20</button>
+            <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-light btn-sm">50</button>
+        </div>
+        </li>
+    </ul>
 </script>

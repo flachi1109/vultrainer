@@ -25,47 +25,5 @@ angular.module('vultrainer', [
     .controller('vultrainerController', ['$rootScope', '$scope', 'nodeService', function($rootScope, $scope, nodeService){
             nodeService.setNodeId(1);
             $rootScope.nodeId = nodeService.getNodeId();
-        }])
-
-    // Obtain the current platform node basic info 
-    .controller('nodeInfoController', ['$rootScope', '$scope', 'dashboardService', 
-        function($rootScope, $scope, dashboardService){  
-            function success(data){
-                $scope.nodeInfo = data;              
-            };
-            function error(err){
-                console.log("Can't get data!");
-            };
-            dashboardService.getNodeInfo($rootScope.nodeId).then(success, error);
-        }])
-    // retrieve vulnerale container information
-    .controller('vulnContainerController', ['$rootScope', '$scope', 'vulnContainerService', 
-        function($rootScope, $scope, vulnContainerService){  
-            function success(data){
-                $scope.vulnContainers = data;              
-            };
-            function error(err){
-                console.log("Can't get data!");
-            };
-            vulnContainerService.getVulnContainerList($rootScope.nodeId).then(success, error);
-            
-            $scope.containerCheckeds = [];
-            $scope.selectContainer = function(vulnContainer){
-                console.log(vulnContainer.checked);
-                if (vulnContainer.checked == true) {
-                    $scope.containerCheckeds.push(vulnContainer.id);
-                    console.log($scope.containerCheckeds);
-                }
-                else{
-                    for (var i=0; i<$scope.containerCheckeds.length; i++){
-                        if($scope.containerCheckeds[i] == vulnContainer.id){
-                            $scope.containerCheckeds.splice(i, 1);
-                        }
-                    }
-                    console.log($scope.containerCheckeds);                    
-                }
-
-            }
-
         }]);
 

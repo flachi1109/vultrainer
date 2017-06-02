@@ -34,8 +34,7 @@ urlpatterns = [
     url(r'(?P<node_id>\d+)/', include('app.urls')),
 
     # will be deleted
-
-    url(r'^test/', TemplateView.as_view(template_name='test.html')),
+    url(r'^test/', TemplateView.as_view(template_name='test2.html')),
     url(r'^viewset/', VulnContainerListViews.as_view())
 ]
 
