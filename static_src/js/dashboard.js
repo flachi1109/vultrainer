@@ -7,7 +7,9 @@ angular.module('dashboard', ['platformNode'])
                 $scope.nodeInfo = data;              
             };
             function error(err){
-                console.log("Can't get data!");
+                $scope.errorType = 'Retrieve Data Error : ';
+                $scope.errorDetail = err;
+                $scope.alertShown = true;
             };
             nodeService.getNodeInfo($rootScope.nodeId).then(success, error);
     }]);

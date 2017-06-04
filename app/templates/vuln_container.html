@@ -116,7 +116,7 @@
                                 <tr ng-repeat="vulnContainer in $data | filter:filterText">
                                     <td class="center">
                                         <label>
-                                            <input type="checkbox" class="ace vulncontainer" ng-model="vulnContainer.checked" ng-change="selectContainer(vulnContainer)"/>
+                                            <input type="checkbox" class="ace vulncontainer" ng-model="vulnContainer.checked" ng-checked="allChecked"  ng-change="selectContainer(vulnContainer)"/>
                                             <span class="lbl"></span>
                                         </label>
                                     </td>
