@@ -95,33 +95,20 @@ angular.module('vulnContainer', ['ngTable'])
             vulnContainerService.getVulnContainerList($rootScope.nodeId).then(success, error);
 
             //Process the container who has been selected
-            $scope.allChecked = false;
             $scope.containerCheckeds = [];
             $scope.selectContainer = function(vulnContainer){
-                console.log(vulnContainer.checked);
                 if (vulnContainer.checked == true) {
                     $scope.containerCheckeds.push(vulnContainer.id);
-                    console.log($scope.containerCheckeds);
                 }
                 else{
-                    // console.log($scope.allChecked);
-                    if ($scope.allChecked==false) {
-                            for (var i=0; i<$scope.containerCheckeds.length; i++){
-                                if($scope.containerCheckeds[i] == vulnContainer.id){
-                                    $scope.containerCheckeds.splice(i, 1);
-                                }
-                            }
-                    }
-                    console.log($scope.containerCheckeds);                   
+                	for (var i=0; i<$scope.containerCheckeds.length; i++){
+	                    if($scope.containerCheckeds[i] == vulnContainer.id){
+	                      	$scope.containerCheckeds.splice(i, 1);
+	                    }
+                    }                  
                 }
-            };
 
-
-            $scope.selectAllItems = function(allChecked){
-                $scope.allChecked  = allChecked;
-                console.log($scope.allChecked);
-                $('[ng-model="vulnContainer.checked"]').click();
-                 console.log($scope.containerCheckeds);
+                // console.log($scope.containerCheckeds);
             };
         }
    	]);
