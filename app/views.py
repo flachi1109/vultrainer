@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import time
 import ConfigParser
 
 import docker
@@ -46,3 +47,41 @@ class VulnContainerListViews(generics.ListCreateAPIView):
         serializer = VulnContainerSerializer(container_list, many=True)
 
         return Response(serializer.data)
+
+class VulnContainerView(APIView):
+    '''
+    Operate the vulnerable containers.Return the status of operated containers and the operation result.
+    '''
+    def get(self, request, node_id,container_id, action):
+        docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
+        data = {}
+
+        try:
+            current_container = docker_node.containers.list(all=True, filters={'id':container_id})[0]
+
+            if action == 'start':
+                current_container.start()
+            if action == 'stop':
+                current_container.stop()
+            if action == 'pause':
+                current_container.pause()
+            if action == 'resume':
+                current_container.unpause()
+            if action == 'kill':
+                current_container.kill()
+            if action == 'restart':
+                current_container.restart()
+            if action == 'remove':
+                current_container.remove()
+
+            data['result'] = True
+
+        except IndexError:
+            clogger.info('No such container! Container id: %s' % container_id)
+
+        except docker.errors.APIError as err:
+            data['result'] = False
+            clogger.debug('%s container %s failed!The reason is:\n%s' % (action, container_id, err))
+            clogger.info('%s container %s failed!' % (action, container_id))
+
+        return Response(data)

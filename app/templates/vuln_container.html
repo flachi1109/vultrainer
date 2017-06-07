@@ -55,27 +55,27 @@
                     	<div class="dataTables_wrapper">
                     		<div class="row">
                                 <div class="col-sm-12">
-                                    <button class="btn btn-sm btn-success left-radius-4">
+                                    <button class="btn btn-sm btn-success left-radius-4" ng-click="containerAction('start')" ng-disabled="!containerCheckeds.length">
                                         <i class="fa fa-play" aria-hidden='true'></i>
                                         启动
                                     </button>
-                                    <button class="btn btn-sm btn-danger">
+                                    <button class="btn btn-sm btn-danger" ng-click="containerAction('stop')" ng-disabled="!containerCheckeds.length">
                                         <i class="fa fa-stop"></i>
                                         停止
                                     </button>
-                                    <button class="btn btn-sm btn-info">
+                                    <button class="btn btn-sm btn-info" ng-click="containerAction('restart')" ng-disabled="!containerCheckeds.length">
                                         <i class="fa fa-refresh"></i>
                                         重启
                                     </button>
-                                    <button class="btn btn-sm btn-info">
+                                    <button class="btn btn-sm btn-info" ng-click="containerAction('pause')" ng-disabled="!containerCheckeds.length">
                                         <i class="fa fa-pause"></i>
                                         暂停
                                     </button>
-                                    <button class="btn btn-sm btn-info">
+                                    <button class="btn btn-sm btn-info" ng-click="containerAction('resume')" ng-disabled="!containerCheckeds.length">
                                         <i class="fa fa-play"></i>
                                         恢复
                                     </button>
-                                    <button class="btn btn-sm btn-danger right-radius-4">
+                                    <button class="btn btn-sm btn-danger right-radius-4" ng-click="containerAction('remove')" ng-disabled="!containerCheckeds.length">
                                         <i class="fa fa-trash"></i>
                                         删除
                                     </button>

@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 from app.views import PlatformNodeViews
 from app.views import VulnContainerListViews
+from app.views import VulnContainerView
 
 dashboard_url = [
     url(r'^nodeinfo', PlatformNodeViews.as_view()),
@@ -11,7 +12,8 @@ dashboard_url = [
 ]
 
 vuln_container_url = [
-    url(r'^all', VulnContainerListViews.as_view()),
+    url(r'^all$', VulnContainerListViews.as_view()),
+    url(r'^(?P<container_id>\w+)/(?P<action>\w+)', VulnContainerView.as_view()),
 ]
 
 urlpatterns = [
