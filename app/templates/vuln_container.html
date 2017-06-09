@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <!-- page specific plugin scripts -->
-<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'js/jquery.dataTables.bootstrap.js' %}"></script>
+<!-- <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.bootstrap.js' %}"></script> -->
 
 
 <div class="breadcrumbs" id="breadcrumbs">
@@ -79,7 +79,7 @@
                                         <i class="fa fa-trash"></i>
                                         删除
                                     </button>
-                                    <button class="btn btn-sm btn-primary all-radius-4">
+                                    <button class="btn btn-sm btn-primary all-radius-4" ng-controller="addVulnContainerModal" ng-click="openModal()">
                                         <i class="fa fa-plus"></i>
                                         添加新靶机
                                     </button>

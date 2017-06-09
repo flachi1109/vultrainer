@@ -1,5 +1,5 @@
 //The module serve vulnContainer html 
-angular.module('vulnContainer', ['ngTable'])
+angular.module('vulnContainer', ['ngTable', 'ui.bootstrap'])
 	// The service to obtain vuln container information
 	.factory('vulnContainerService', ['$http', '$q', function($http, $q){
 		var service = {};
@@ -44,7 +44,30 @@ angular.module('vulnContainer', ['ngTable'])
 			return input.split('/')[1];
 		}
 	})
+    //popup add_vuln_container.html page
+    .controller('addVulnContainerModal', ['$scope', '$rootScope', '$uibModal', function($scope, $rootScope, $uibModal) {
+        $scope.openModal = function() {
+                var uibModalInstance = $uibModal.open({
+                    templateUrl : $rootScope.nodeId+'/vulnContainer/add',
+                    controller : 'chooseAddMode',
+                    backdrop: 'static',
+                })
+            }
+    }])
 
+    //Controller for choose adding mode
+    .controller('chooseAddMode', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+          $scope.modalAlert = false;
+          $scope.confirm = function() {
+            if (typeof($scope.addMode) == "undefined"){
+                $scope.modalAlert = true; 
+            }
+            
+          };
+          $scope.cancel = function() {
+              $uibModalInstance.dismiss('cancel');
+          }
+    }])
 	//vulnerale container information
     .controller('vulnContainerController', ['$rootScope', '$scope', '$timeout','vulnContainerService', 'NgTableParams',
         function($rootScope, $scope, $timeout, vulnContainerService, NgTableParams){  
@@ -91,7 +114,7 @@ angular.module('vulnContainer', ['ngTable'])
             		$scope.errorDetail = err;
                 	$scope.alertShown = true;
             	}; 
-            	console.log(action);
+            	// console.log(action);
             	for(var i=0; i<$scope.containerCheckeds.length; i++){
             		vulnContainerService.operateContainer($rootScope.nodeId, $scope.containerCheckeds[i], action).then(action_success, action_error);
             	}

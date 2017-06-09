@@ -23,6 +23,9 @@
 #container-table th{
 	color: #337ab7!important;
 }
+.no-margin-bottom{
+	margin-bottom: 0px!important;
+}
 .left-radius-4{
 	border-radius: 4px 0px 0px 4px!important;
 }
