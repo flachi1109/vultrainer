@@ -15,6 +15,7 @@ vuln_container_url = [
     url(r'^all$', VulnContainerListViews.as_view()),
     url(r'^(?P<container_id>\w+)/(?P<action>\w+)', VulnContainerView.as_view()),
     url(r'^add$', TemplateView.as_view(template_name='add_vuln_container.html')),
+    url(r'^vulhubMode$', TemplateView.as_view(template_name='vulhub_mode.html')),
 ]
 
 urlpatterns = [

@@ -1,0 +1,43 @@
+<div>
+    <div class="well no-margin-bottom">
+        <h1 class="grey lighter smaller">
+                <span class="blue bigger-125">
+                    <i class="fa fa-television"></i>
+                        Vulhub
+                </span>
+                Use Vulhub Target
+            </h1>
+        <hr />
+        
+            <div class="widget-box">
+                <div class="widget-header header-color-blue2">
+                    <h4 class="lighter smaller">Vulnerable Target in Vulhub</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main padding-8">
+                        <div id="tree1" class="tree">
+                            <tree-view tree-service="vulhubTree" node-label="name" item-class="pull-left"></tree-view>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="alert alert-danger" ng-show="modalAlert">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="fa fa-remove"></i>
+            </button>
+            <strong><i class="fa fa-remove"></i> Error!</strong> You must choose a mode.
+            <br />
+        </div>
+        <hr />
+        <div class="space"></div>
+        <div class="center">
+            <button class="btn btn-primary" ng-click="confirm()">
+                <i class="fa fa-check"></i> Confirm
+            </button>
+            <button class="btn btn-danger" ng-click="cancel()">
+                <i class="fa fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+</div>

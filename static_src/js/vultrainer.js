@@ -14,12 +14,13 @@ angular.module('vultrainer', [
             url: '/dashboard/',
             templateUrl: '/dashboard/',
             controller: 'vultrainerController'
-        });
-        $stateProvider.state('vulnContainer', {
+        })
+        .state('vulnContainer', {
             url: '/vulnContainer/',
             templateUrl: '/vulnContainer/',
             controller: 'vultrainerController'
         });
+
     }])
     //Obtain the current platform node ID
     .controller('vultrainerController', ['$rootScope', '$scope', 'nodeService', function($rootScope, $scope, nodeService){

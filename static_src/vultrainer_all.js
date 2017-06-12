@@ -43,7 +43,7 @@ angular.module('platformNode', [])
     }]);
 
 //The module serve vulnContainer html 
-angular.module('vulnContainer', ['ngTable', 'ui.bootstrap'])
+angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'ui.bootstrap.treeview'])
 	// The service to obtain vuln container information
 	.factory('vulnContainerService', ['$http', '$q', function($http, $q){
 		var service = {};
@@ -98,19 +98,39 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap'])
                 })
             }
     }])
-
     //Controller for choose adding mode
-    .controller('chooseAddMode', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+    .controller('chooseAddMode', ['$scope', '$rootScope','$uibModalInstance', '$uibModal', function($scope, $rootScope, $uibModalInstance,$uibModal) {
           $scope.modalAlert = false;
           $scope.confirm = function() {
             if (typeof($scope.addMode) == "undefined"){
                 $scope.modalAlert = true; 
+            }
+            else{
+                if ($scope.addMode == 1){
+                    $scope.vulhubModal = function() {
+                        $uibModal.open({
+                            templateUrl : $rootScope.nodeId+'/vulnContainer/vulhubMode',
+                            controller : 'vulhubMode',
+                            backdrop: 'static',
+                        })
+                    }
+                    $uibModalInstance.close($scope.vulhubModal());
+                }              
             }
             
           };
           $scope.cancel = function() {
               $uibModalInstance.dismiss('cancel');
           }
+    }])
+    .controller('vulhubMode', ['$scope','TreeViewService', function($scope, TreeViewService){
+        $scope.vulhubTree = new TreeViewService();
+        $scope.vulhubTree.nodes = [
+            {id:1, name:'first',children:[]},
+            {id:2, name:'second',children:[
+                {id:10, name:'children of second', children:[]}
+            ]}
+        ]
     }])
 	//vulnerale container information
     .controller('vulnContainerController', ['$rootScope', '$scope', '$timeout','vulnContainerService', 'NgTableParams',
@@ -183,12 +203,13 @@ angular.module('vultrainer', [
             url: '/dashboard/',
             templateUrl: '/dashboard/',
             controller: 'vultrainerController'
-        });
-        $stateProvider.state('vulnContainer', {
+        })
+        .state('vulnContainer', {
             url: '/vulnContainer/',
             templateUrl: '/vulnContainer/',
             controller: 'vultrainerController'
         });
+
     }])
     //Obtain the current platform node ID
     .controller('vultrainerController', ['$rootScope', '$scope', 'nodeService', function($rootScope, $scope, nodeService){
