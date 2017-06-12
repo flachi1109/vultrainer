@@ -1,3 +1,4 @@
+{% verbatim %}
 <div>
     <div class="well no-margin-bottom">
         <h1 class="grey lighter smaller">
@@ -8,7 +9,7 @@
                 Use Vulhub Target
             </h1>
         <hr />
-        
+
             <div class="widget-box">
                 <div class="widget-header header-color-blue2">
                     <h4 class="lighter smaller">Vulnerable Target in Vulhub</h4>
@@ -16,7 +17,10 @@
                 <div class="widget-body">
                     <div class="widget-main padding-8">
                         <div id="tree1" class="tree">
-                            <tree-view tree-service="vulhubTree" node-label="name" item-class="pull-left"></tree-view>
+                            <!-- <tree-view tree-service="vulhubTree" node-label="name" item-class="pull-left"></tree-view> -->
+                            <treecontrol class="tree-boot" tree-model="vulhubData" option="vulhubTreeOptions">
+                                treenode: {{node.id}} {{node.name}}
+                            </treecontrol>
                         </div>
                     </div>
                 </div>
@@ -41,3 +45,4 @@
         </div>
     </div>
 </div>
+{% endverbatim %}

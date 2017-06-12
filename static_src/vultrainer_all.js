@@ -43,7 +43,7 @@ angular.module('platformNode', [])
     }]);
 
 //The module serve vulnContainer html 
-angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'ui.bootstrap.treeview'])
+angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl'])
 	// The service to obtain vuln container information
 	.factory('vulnContainerService', ['$http', '$q', function($http, $q){
 		var service = {};
@@ -123,9 +123,12 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'ui.bootstrap.treevi
               $uibModalInstance.dismiss('cancel');
           }
     }])
-    .controller('vulhubMode', ['$scope','TreeViewService', function($scope, TreeViewService){
-        $scope.vulhubTree = new TreeViewService();
-        $scope.vulhubTree.nodes = [
+    .controller('vulhubMode', ['$scope', function($scope){
+        $scope.treeOptions = {
+            nodeChildren: "children",
+            dirSelectable: false,
+        }
+        $scope.vulhubData = [
             {id:1, name:'first',children:[]},
             {id:2, name:'second',children:[
                 {id:10, name:'children of second', children:[]}
