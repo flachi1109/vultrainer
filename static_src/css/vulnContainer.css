@@ -4,3 +4,9 @@
 .no-margin-bottom{
 	margin-bottom: 0px!important;
 }
+.auto-scroll{
+    overflow: auto;
+}
+.height-300{
+    height: 300px;
+}

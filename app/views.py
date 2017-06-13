@@ -11,6 +11,7 @@ from rest_framework import generics
 
 from app.handler.BaseHandler import BaseHandler
 from app.handler.PlatformNodeHandler import PlatformNodeHandeler
+from app.handler.VulhubHandler import Vulhub
 from app.serializers import PlatformNodeSerailizer
 from app.serializers import VulnContainerSerializer
 from app.auxiliary.ColorLogger import ColorLogger
@@ -85,3 +86,14 @@ class VulnContainerView(APIView):
             clogger.info('%s container %s failed!' % (action, container_id))
 
         return Response(data)
+
+class VulhubOperateView(APIView):
+
+    def get(self, request, node_id, action):
+        vulhub = Vulhub(vulhub_conf='app/extra.conf')
+        vulhub_tree = ''
+        if action == 'tree':
+            vulhub_tree = vulhub.get_vulhub_dict()
+
+        return Response(vulhub_tree)
+

@@ -42,8 +42,28 @@ angular.module('platformNode', [])
         };
     }]);
 
+angular.module('vulhub', [])
+    // The service to operate vulhub 
+    .factory('vulhubService', ['$http', '$q', function($http, $q){
+        var service = {};
+
+        // Get all vulhub files tree
+        service.getVulhubTree = function(nodeId){
+            var deffered = $q.defer();
+
+            $http.get("/" + nodeId + "/vulhubMode/tree")
+                .then(function(response){
+                    deffered.resolve(response.data);
+                }, function(response){
+                    deffered.reject(response.data);
+                });
+            return deffered.promise;
+
+        };
+        return service;
+    }]);
 //The module serve vulnContainer html 
-angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl'])
+angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulhub'])
 	// The service to obtain vuln container information
 	.factory('vulnContainerService', ['$http', '$q', function($http, $q){
 		var service = {};
@@ -109,7 +129,7 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl'])
                 if ($scope.addMode == 1){
                     $scope.vulhubModal = function() {
                         $uibModal.open({
-                            templateUrl : $rootScope.nodeId+'/vulnContainer/vulhubMode',
+                            templateUrl : $rootScope.nodeId+'/vulhubMode',
                             controller : 'vulhubMode',
                             backdrop: 'static',
                         })
@@ -123,17 +143,29 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl'])
               $uibModalInstance.dismiss('cancel');
           }
     }])
-    .controller('vulhubMode', ['$scope', function($scope){
-        $scope.treeOptions = {
+    .controller('vulhubMode', ['$scope', '$rootScope' ,'vulhubService', '$uibModalInstance', '$uibModal', function($scope, $rootScope, vulhubService, $uibModalInstance, $uibModal){
+        $scope.vulhubTreeOptions = {
             nodeChildren: "children",
-            dirSelectable: false,
+            dirSelectable: false
         }
-        $scope.vulhubData = [
-            {id:1, name:'first',children:[]},
-            {id:2, name:'second',children:[
-                {id:10, name:'children of second', children:[]}
-            ]}
-        ]
+
+        function success(data){
+            $scope.vulhubData = data      
+        };
+        function error(err){
+            $scope.modalAlert = true; 
+        }; 
+
+        $scope.selectedNode = '';
+        $scope.showSelected = function(node){
+            $scope.selectedNode = node;
+            console.log(node.full_path)
+        };
+        vulhubService.getVulhubTree($rootScope.nodeId).then(success, error);
+
+        $scope.cancel = function() {
+              $uibModalInstance.dismiss('cancel');
+          }
     }])
 	//vulnerale container information
     .controller('vulnContainerController', ['$rootScope', '$scope', '$timeout','vulnContainerService', 'NgTableParams',

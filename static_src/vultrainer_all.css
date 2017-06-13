@@ -26,7 +26,12 @@
 .no-margin-bottom{
 	margin-bottom: 0px!important;
 }
-
+.auto-scroll{
+    overflow: auto;
+}
+.height-300{
+    height: 300px;
+}
 .left-radius-4{
 	border-radius: 4px 0px 0px 4px!important;
 }
