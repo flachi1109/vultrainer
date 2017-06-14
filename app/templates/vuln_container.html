@@ -96,13 +96,14 @@
                                     </th>
                                     <th>状态</th>
                                     <th>靶机名称</th>
-                                    <th class="hidden-480">漏洞描述</th>
+                                    <th>漏洞编号</th>
+                                    <th>漏洞描述</th>
+                                    <th>复现步骤</th>
 
                                     <th>
-                                        <i class="icon-time bigger-110 hidden-480"></i>
                                         IP地址
                                     </th>
-                                    <th class="hidden-480">对外端口</th>
+                                    <th>对外端口</th>
 
                                     <th>功能</th>
                                 </tr>
@@ -121,7 +122,9 @@
                                         <span class="label label-lg" ng-class="{'running':'label-success', 'paused':'label-warning', 'exited':'label-danger', 'created':'label-info'}[vulnContainer.status]">{{ vulnContainer.status }}</span>
                                     </td>
                                     <td>{{ vulnContainer.name }}</td>
+                                    <td>{{ vulnContainer.vuln_num }}</td>
                                     <td class="hidden-480">{{ vulnContainer.description }}</td>
+                                    <td>{{ vulnContainer.rep_steps }}</td>
                                     <td>
                                     	<span ng-if="vulnContainer.access_ip.length == 0">-</span>
                                     	<span ng-if="vulnContainer.access_ip.length > 0">

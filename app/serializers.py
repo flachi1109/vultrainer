@@ -26,6 +26,8 @@ class VulnContainerSerializer(serializers.Serializer):
     name = serializers.CharField()
     status =serializers.CharField()
     description = serializers.SerializerMethodField()
+    vuln_num = serializers.SerializerMethodField()
+    rep_steps = serializers.SerializerMethodField()
     access_ip = serializers.SerializerMethodField()
     exposed_port = serializers.SerializerMethodField()
 
@@ -36,7 +38,7 @@ class VulnContainerSerializer(serializers.Serializer):
         except ObjectDoesNotExist as err:
             clogger.debug(err)
             clogger.error('No descritpion yet! ')
-            description = 'No description!'
+            description = '-'
 
         return description
 
@@ -55,3 +57,24 @@ class VulnContainerSerializer(serializers.Serializer):
             exposed_port = ''
 
         return exposed_port
+
+    def get_vuln_num(self, container):
+        try:
+            vuln_num = VulnContainer.objects.get(container_id=container.id).vuln_num
+        except ObjectDoesNotExist as err:
+            clogger.debug(err)
+            clogger.error('No vulnerability number yet! ')
+            vuln_num = '-'
+
+        return vuln_num
+
+    def get_rep_steps(self, container):
+        try:
+            rep_steps = VulnContainer.objects.get(container_id=container.id).rep_steps
+        except ObjectDoesNotExist as err:
+            clogger.debug(err)
+            clogger.error('No repetition of steps yet! ')
+            rep_steps = '-'
+
+        return rep_steps
+

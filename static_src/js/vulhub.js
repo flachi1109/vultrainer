@@ -14,7 +14,20 @@ angular.module('vulhub', [])
                     deffered.reject(response.data);
                 });
             return deffered.promise;
-
         };
+
+        // Update the vulhub files tree
+        service.updateVulhubTree = function(nodeId){
+            var deffered = $q.defer();
+
+            $http.get("/" + nodeId + "/vulhubMode/update")
+                .then(function(response){
+                    deffered.resolve(response.data);
+                }, function(response){
+                    deffered.reject(response.data);
+                });
+            return deffered.promise;
+        };
+
         return service;
     }]);

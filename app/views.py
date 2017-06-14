@@ -94,6 +94,11 @@ class VulhubOperateView(APIView):
         vulhub_tree = ''
         if action == 'tree':
             vulhub_tree = vulhub.get_vulhub_dict()
+        if action == 'update':
+            vulhub.update_repo()
+            vulhub_tree = vulhub.get_vulhub_dict()
+        if action == 'create':
+            return render(request, template_name='create_vulhub_case.html')
 
         return Response(vulhub_tree)
 

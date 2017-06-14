@@ -1,0 +1,58 @@
+{% verbatim %}
+<div>
+    <div class="well no-margin-bottom">
+        <h1 class="grey lighter smaller">
+                <span class="blue bigger-125">
+                    <i class="fa fa-television"></i>
+                        Vulhub
+                </span>
+                {{ cur_case.name }}
+            </h1>
+        <hr />
+
+            <div class="widget-box">
+                <div class="widget-header header-color-blue2">
+                    <h4 class="lighter smaller">Create Vulhub Case</h4>
+                </div>
+                <div class="widget-body slimScrollDiv auto-scroll height-300">
+                    <div class="widget-main padding-8">
+                        <div class=" col-sm-12 space-6"></div>
+                        <div class="col-sm-12">
+                            <label class="col-sm-3 label-font-blue">漏洞编号: </label>
+                            <input class="col-sm-9" type="" name="" placeholder="CVE-xxxx-xxxx, BID-xxxxxx">
+                        </div>
+                        <div class="col-sm-12 space-6"></div>
+                        <div class="col-sm-12">
+                            <label class="col-sm-3 label-font-blue">漏洞描述: </label>
+                            <textarea class="col-sm-9 no-resize-150" type="" name="" placeholder="Description"></textarea> 
+                        </div>
+                        <div class="col-sm-12 space-6"></div>
+                        <div class="col-sm-12">
+                            <label class="col-sm-3 label-font-blue">复现步骤: </label>
+                            <input type="file" class="col-sm-9" name="" nv-file-drop uploader="fileUploader"> </input>
+                            <!-- <input class="col-sm-9" type="file" clas id="id-input-file-2" /> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="alert alert-danger" ng-show="modalAlert">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="fa fa-remove"></i>
+            </button>
+            <strong><i class="fa fa-remove"></i> Error!</strong> Can not retrieve the vulhub cases!
+            <br />
+        </div>
+        <hr />
+        <div class="space"></div>
+        <div class="center">
+            <button class="btn btn-primary" ng-disabled="selectedNode==''" ng-click="confirm()">
+                <i class="fa fa-check"></i> Confirm
+            </button>
+            <button class="btn btn-danger" ng-click="cancel()">
+                <i class="fa fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+</div>
+{% endverbatim %}

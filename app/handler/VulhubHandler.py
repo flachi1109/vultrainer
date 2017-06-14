@@ -72,3 +72,11 @@ class Vulhub(object):
             dir_dic['children'] = [self.__make_dict(dir_list, case_names)]
 
         return dir_dic
+
+    def update_repo(self):
+        cwd = os.getcwd()
+        os.chdir(self.vulhub_dir)
+        status = os.system('git pull origin master')
+        os.chdir(cwd)
+
+        return status

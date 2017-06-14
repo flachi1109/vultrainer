@@ -32,6 +32,13 @@
 .height-300{
     height: 300px;
 }
+.no-resize-150{
+    resize: none;
+    height: 150px;
+}
+.label-font-blue{
+    color: #337ab7!important;
+}
 .left-radius-4{
 	border-radius: 4px 0px 0px 4px!important;
 }
