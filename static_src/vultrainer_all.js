@@ -73,6 +73,22 @@ angular.module('vulhub', [])
             return deffered.promise;
         };
 
+        // create new vulhub case
+        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileUploader){
+            var deffered = $q.defer();
+            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description};
+            $http.get("/" + nodeId + "/vulhubMode/setup")
+                .then(function(response){
+                    if(response.data["status"]=="ok"){
+                        fileUploader.uploadAll()
+                    }   
+                    deffered.resolve(response.data);
+                }, function(response){
+                    deffered.reject(response.data);
+                });
+            return deffered.promise;
+        };
+
         return service;
     }]);
 //The module serve vulnContainer html 
@@ -106,7 +122,21 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
 					deffered.reject(response.data);
 				});
 			return deffered.promise;
-		}
+		};
+
+        //Download steps doc files
+        service.downloadRepStepsFiles = function(nodeId, containerId, fileName){
+            var deffered = $q.defer();
+            var postData = {file_name: fileName};
+            $http.post("/" + nodeId + "/vulnContainer/" + containerId + "/download", postData, {responseType:'arraybuffer'})
+                .then(function(response){
+                    deffered.resolve(response);
+                }, function(response){
+                    deffered.reject(response);
+                });
+            return deffered.promise;
+        }
+
 		return service;
 	}])
 
@@ -156,6 +186,7 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
               $uibModalInstance.dismiss('cancel');
           }
     }])
+
     .controller('vulhubMode', ['$scope', '$rootScope' ,'vulhubService', '$uibModalInstance', '$uibModal', 
         function($scope, $rootScope, vulhubService, $uibModalInstance, $uibModal){
         $scope.vulhubTreeOptions = {
@@ -173,12 +204,21 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
         $scope.selectedNode = '';
         $scope.showSelected = function(node){
             $scope.selectedNode = node;
-            // console.log(node.full_path)
         };
         vulhubService.getVulhubTree($rootScope.nodeId).then(success, error);
         
+        $scope.updateStatus = 0;
+        function update_success(data){
+            console.log(data['status']);
+            if (data['status'] == 'ok'){
+                $scope.updateStatus = 0;
+                vulhubService.getVulhubTree($rootScope.nodeId).then(success, error);
+            }
+        }
+
         $scope.update = function(){
-            vulhubService.updateVulhubTree($rootScope.nodeId).then(success, error);
+            $scope.updateStatus = 1;
+            vulhubService.updateVulhubTree($rootScope.nodeId).then(update_success, error);
         }
 
         $scope.next = function() {
@@ -187,6 +227,7 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
                     templateUrl : $rootScope.nodeId+'/vulhubMode/create',
                     controller : 'createVulhubController',
                     backdrop: 'static',
+                    keyboard: false,
                     resolve: {
                         cur_case: $scope.selectedNode
                     }
@@ -199,15 +240,29 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
               $uibModalInstance.dismiss('cancel');
           }
     }])
+
+    // Fill out the vulnerability information
     .controller('createVulhubController', ['$scope', '$rootScope' ,'vulhubService', '$uibModalInstance', '$uibModal', 'FileUploader', 'cur_case',
         function($scope, $rootScope, vulhubService, $uibModalInstance, $uibModal, FileUploader, cur_case){
             $scope.cur_case = cur_case;
-            $scope.fileUploader = new FileUploader({});
+            $scope.vuln_number = "";
+            $scope.description = "";
+            $scope.fileUploader = new FileUploader({
+                url: '1/vulnContainer/f3123123asdfa123/upload',
+                alias: 'rep_steps',
+                queueLimit: 1
+            });
+
             $scope.cancel = function() {
-              $uibModalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
+            }
+            $scope.confirm = function() {
+
+                $scope.fileUploader.uploadAll()
             }
 
         }])
+
 	//vulnerale container information
     .controller('vulnContainerController', ['$rootScope', '$scope', '$timeout','vulnContainerService', 'NgTableParams',
         function($rootScope, $scope, $timeout, vulnContainerService, NgTableParams){  
@@ -254,12 +309,26 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
             		$scope.errorDetail = err;
                 	$scope.alertShown = true;
             	}; 
-            	// console.log(action);
             	for(var i=0; i<$scope.containerCheckeds.length; i++){
             		vulnContainerService.operateContainer($rootScope.nodeId, $scope.containerCheckeds[i], action).then(action_success, action_error);
             	}
 
             	$scope.containerCheckeds = [];
+            }
+
+            $scope.downloadAction = function(containerId, fileName){
+                function action_success(response){
+                    var file = new Blob([response.data], {type: response.headers('Content-Type')})
+                    var fileUrl = URL.createObjectURL(file);
+                    window.open(fileUrl);
+                };
+                function action_error(err){
+                    $scope.errorType = 'Download Failed : ';
+                    $scope.errorDetail = err;
+                    $scope.alertShown = true;
+                }; 
+
+                vulnContainerService.downloadRepStepsFiles($rootScope.nodeId, containerId, fileName).then(action_success, action_error);
             }
         }
    	]);

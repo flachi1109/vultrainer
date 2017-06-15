@@ -1,9 +1,11 @@
 # -*- coding:utf-8 -*-
 import time
+import os
 import ConfigParser
 
 import docker
 from django.shortcuts import render
+from django.http import StreamingHttpResponse, HttpResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -53,7 +55,7 @@ class VulnContainerView(APIView):
     '''
     Operate the vulnerable containers.Return the status of operated containers and the operation result.
     '''
-    def get(self, request, node_id,container_id, action):
+    def get(self, request, node_id, container_id, action):
         docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
         data = {}
 
@@ -87,6 +89,34 @@ class VulnContainerView(APIView):
 
         return Response(data)
 
+    def post(self, request, node_id, container_id, action):
+
+        config = ConfigParser.ConfigParser()
+        config.read('app/extra.conf')
+        dir_name = config.get('step_files', 'path')
+
+        def file_iterator(file_name, chunk_size=512):
+            with open(file_name, 'rb') as f:
+                while True:
+                    c = f.read(chunk_size)
+                    if c:
+                        yield c
+                    else:
+                        break
+            f.close()
+
+        if action == 'download':
+            file_name = request.data['file_name']
+            # file_name = dir_name + '/' + file_name
+            file_name = os.path.join(dir_name, file_name)
+            response = StreamingHttpResponse(file_iterator(file_name))
+            response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
+
+            return response
+
+
+
 class VulhubOperateView(APIView):
 
     def get(self, request, node_id, action):
@@ -94,11 +124,41 @@ class VulhubOperateView(APIView):
         vulhub_tree = ''
         if action == 'tree':
             vulhub_tree = vulhub.get_vulhub_dict()
+            return Response(vulhub_tree)
+
         if action == 'update':
-            vulhub.update_repo()
-            vulhub_tree = vulhub.get_vulhub_dict()
+            status = vulhub.update_repo()
+            return Response({'status': status})
+
         if action == 'create':
             return render(request, template_name='create_vulhub_case.html')
 
-        return Response(vulhub_tree)
 
+    def post(self, request, node_id, action):
+        config = ConfigParser.ConfigParser()
+        config.read('app/extra.conf')
+        dir_name = config.get('step_files', 'path')
+
+        if action == 'setup':
+            case_path = request.data['case_path']
+            vuln_num = request.data['vuln_num']
+            desc = request.data['desc']
+
+            vulhub = Vulhub(vulhub_conf='app/extra.conf')
+
+
+
+
+        if action == 'upload':
+            upload_file = request.FILES.get('rep_steps', None)
+
+            if not upload_file:
+                return HttpResponse('No file to upload!')
+
+            rep_steps_file = open(os.path.join(dir_name,upload_file.name), 'wb')
+            for chunk in upload_file.chunks():
+                rep_steps_file.write(chunk)
+
+            rep_steps_file.close()
+
+            return HttpResponse('Upload Done!')

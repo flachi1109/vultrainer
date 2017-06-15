@@ -123,8 +123,12 @@
                                     </td>
                                     <td>{{ vulnContainer.name }}</td>
                                     <td>{{ vulnContainer.vuln_num }}</td>
-                                    <td class="hidden-480">{{ vulnContainer.description }}</td>
-                                    <td>{{ vulnContainer.rep_steps }}</td>
+                                    <td class="hidden-480 center">
+                                        <a uib-tooltip="{{ vulnContainer.description }}"><i class="fa fa-list-alt"></i></a>
+                                    </td>
+                                    <td class="center">
+                                        <a class='pointer' ng-click="downloadAction(vulnContainer.id, vulnContainer.rep_steps)"><i class="fa fa-file-word-o"></i></a>
+                                    </td>
                                     <td>
                                     	<span ng-if="vulnContainer.access_ip.length == 0">-</span>
                                     	<span ng-if="vulnContainer.access_ip.length > 0">

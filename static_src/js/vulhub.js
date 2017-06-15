@@ -29,5 +29,21 @@ angular.module('vulhub', [])
             return deffered.promise;
         };
 
+        // create new vulhub case
+        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileUploader){
+            var deffered = $q.defer();
+            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description};
+            $http.get("/" + nodeId + "/vulhubMode/setup")
+                .then(function(response){
+                    if(response.data["status"]=="ok"){
+                        fileUploader.uploadAll()
+                    }   
+                    deffered.resolve(response.data);
+                }, function(response){
+                    deffered.reject(response.data);
+                });
+            return deffered.promise;
+        };
+
         return service;
     }]);

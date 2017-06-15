@@ -19,18 +19,17 @@
                         <div class=" col-sm-12 space-6"></div>
                         <div class="col-sm-12">
                             <label class="col-sm-3 label-font-blue">漏洞编号: </label>
-                            <input class="col-sm-9" type="" name="" placeholder="CVE-xxxx-xxxx, BID-xxxxxx">
+                            <input class="col-sm-9" type="" name="" placeholder="CVE-xxxx-xxxx, BID-xxxxxx" ng-model="vuln_number">
                         </div>
                         <div class="col-sm-12 space-6"></div>
                         <div class="col-sm-12">
                             <label class="col-sm-3 label-font-blue">漏洞描述: </label>
-                            <textarea class="col-sm-9 no-resize-150" type="" name="" placeholder="Description"></textarea> 
+                            <textarea class="col-sm-9 no-resize-150" type="" name="" placeholder="Description" ng-model="description"></textarea> 
                         </div>
                         <div class="col-sm-12 space-6"></div>
                         <div class="col-sm-12">
                             <label class="col-sm-3 label-font-blue">复现步骤: </label>
-                            <input type="file" class="col-sm-9" name="" nv-file-drop uploader="fileUploader"> </input>
-                            <!-- <input class="col-sm-9" type="file" clas id="id-input-file-2" /> -->
+                            <input type="file" class="col-sm-9" name="" nv-file-select uploader="fileUploader"> </input>
                         </div>
                     </div>
                 </div>
@@ -40,13 +39,13 @@
             <button type="button" class="close" data-dismiss="alert">
                 <i class="fa fa-remove"></i>
             </button>
-            <strong><i class="fa fa-remove"></i> Error!</strong> Can not retrieve the vulhub cases!
+            <strong><i class="fa fa-remove"></i> Warning!</strong> Can not retrieve the vulhub cases!
             <br />
         </div>
         <hr />
         <div class="space"></div>
         <div class="center">
-            <button class="btn btn-primary" ng-disabled="selectedNode==''" ng-click="confirm()">
+            <button class="btn btn-primary" ng-disabled="vuln_number.trim()=='' || description.trim()=='' || fileUploader.queue.length==0" ng-click="confirm()">
                 <i class="fa fa-check"></i> Confirm
             </button>
             <button class="btn btn-danger" ng-click="cancel()">

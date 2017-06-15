@@ -36,7 +36,7 @@
         <hr />
         <div class="space"></div>
         <div class="center">
-            <button class="btn btn-success" ng-click="update()">
+            <button class="btn btn-success" ng-disabled="updateStatus==1" ng-click="update()">
                 <i class="fa fa-cloud"></i> Update
             </button>
             <button class="btn btn-primary" ng-disabled="selectedNode==''" ng-click="next()">

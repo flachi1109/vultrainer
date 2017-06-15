@@ -1,5 +1,6 @@
 import os
 import ConfigParser
+import subprocess
 
 from ..auxiliary.ColorLogger import ColorLogger
 
@@ -74,9 +75,63 @@ class Vulhub(object):
         return dir_dic
 
     def update_repo(self):
+        '''
+        update the vulhub git repo
+        :return: if update success return ok
+        '''
+        status = 'failed'
+
         cwd = os.getcwd()
         os.chdir(self.vulhub_dir)
-        status = os.system('git pull origin master')
+        popen = subprocess.Popen(['git', 'pull', 'origin', 'master'], stdout=subprocess.PIPE, shell=False)
+        stdout, stderr = popen.communicate()
+
+        if stdout.find('Already up-to-date') > -1:
+            status = 'ok'
+
         os.chdir(cwd)
 
         return status
+
+    def setup_case(self, case_path):
+        cwd = os.getcwd()
+        os.chdir(os.path.join(self.vulhub_dir, case_path))
+
+        def file_gen():
+            with open('README.md', 'r') as readme_file:
+                for line in readme_file:
+                    yield line
+
+        build_flag = 0
+        up_flag = 0
+        for line in file_gen():
+            if build_flag and up_flag:
+                break
+            if line.find('docker-compose build'):
+                build_flag = 1
+                continue
+
+            if line.find('docker-compose up -d'):
+                build_flag = 1
+                continue
+
+        build_suc_flag = 0
+        up_suc_flag = 0
+
+        if build_flag:
+            popen = subprocess.Popen(['docker-compose', 'build'], stdout=subprocess.PIPE, shell=False)
+            stdout, stderr = popen.communicate()
+            if stdout.find('Successfully built'):
+                build_suc_flag = 1
+        if up_flag:
+            popen = subprocess.Popen(['docker-compose', 'up', '-d'], stdout=subprocess.PIPE, shell=False)
+            stdout, stderr = popen.communicate()
+            if stderr is not None:
+                up_suc_flag = 1
+
+        os.chdir(cwd)
+
+        if build_suc_flag and up_suc_flag:
+            return True
+        else:
+            return False
