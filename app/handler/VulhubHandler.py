@@ -62,9 +62,9 @@ class Vulhub(object):
                 case_dic = {}
                 case_dic['name'] = case_name
                 case_dic['children'] = []
-                case_dic['full_path'] = dir_list[0]+'/'+case_name \
+                case_dic['full_path'] = case_name \
                     if dir_list[0] == '' \
-                    else '/'+dir_list[0]+'/'+case_name
+                    else dir_list[0]+'/'+case_name
                 dir_dic['children'].append(case_dic)
 
         else:
@@ -123,11 +123,19 @@ class Vulhub(object):
             stdout, stderr = popen.communicate()
             if stdout.find('Successfully built'):
                 build_suc_flag = 1
+            else:
+                self.clogger.info('docker-compose build failed!')
+
+            self.clogger.debug(stdout)
+
         if up_flag:
             popen = subprocess.Popen(['docker-compose', 'up', '-d'], stdout=subprocess.PIPE, shell=False)
             stdout, stderr = popen.communicate()
-            if stderr is not None:
+            if stdout != '':
                 up_suc_flag = 1
+            else:
+                self.clogger.info('docker-compose up -d failed!')
+            self.clogger.debug(stdout)
 
         os.chdir(cwd)
 

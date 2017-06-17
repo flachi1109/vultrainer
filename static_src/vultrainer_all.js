@@ -74,17 +74,14 @@ angular.module('vulhub', [])
         };
 
         // create new vulhub case
-        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileUploader){
+        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileName){
             var deffered = $q.defer();
-            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description};
-            $http.get("/" + nodeId + "/vulhubMode/setup")
+            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileName};
+            $http.post("/" + nodeId + "/vulhubMode/setup", postData)
                 .then(function(response){
-                    if(response.data["status"]=="ok"){
-                        fileUploader.uploadAll()
-                    }   
-                    deffered.resolve(response.data);
+                    deffered.resolve(response);
                 }, function(response){
-                    deffered.reject(response.data);
+                    deffered.reject(response);
                 });
             return deffered.promise;
         };
@@ -248,7 +245,7 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
             $scope.vuln_number = "";
             $scope.description = "";
             $scope.fileUploader = new FileUploader({
-                url: '1/vulnContainer/f3123123asdfa123/upload',
+                url: '1/vulhubMode/upload',
                 alias: 'rep_steps',
                 queueLimit: 1
             });
@@ -257,8 +254,19 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
                 $uibModalInstance.dismiss('cancel');
             }
             $scope.confirm = function() {
+                // console.log($scope.fileUploader.queue[0].file.name);
+                // console.log(cur_case);
+                function success(response){
+                    console.log(response.data);
+                    if(response.data['status'] == 'ok'){
+                        fileUploader.uploadAll()
+                    }
+                }
+                function error(response){
 
-                $scope.fileUploader.uploadAll()
+                }
+                vulhubService.createVulhubCase($rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name)
+                    .then(success, error);
             }
 
         }])

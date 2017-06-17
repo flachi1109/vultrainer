@@ -17,6 +17,7 @@ from app.handler.VulhubHandler import Vulhub
 from app.serializers import PlatformNodeSerailizer
 from app.serializers import VulnContainerSerializer
 from app.auxiliary.ColorLogger import ColorLogger
+from app.models import VulnContainer
 
 
 
@@ -143,22 +144,45 @@ class VulhubOperateView(APIView):
             case_path = request.data['case_path']
             vuln_num = request.data['vuln_num']
             desc = request.data['desc']
-
+            rep_file = request.data['rep_file']
             vulhub = Vulhub(vulhub_conf='app/extra.conf')
 
+            docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
+            before = len(docker_node.containers.list(all=True))
 
+            data = {}
+            data['status'] = 'failed'
+            if vulhub.setup_case(case_path):
+                docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
+                after = len(docker_node.containers.list(all=True))
+                new_cases = docker_node.containers.list(limit=(after-before))
 
+                rep_file = str(VulnContainer.object.last().id+(after-before)) \
+                           + os.path.splitext(rep_file)[-1]
+                for case in new_cases:
+                    vulhub_case = VulnContainer(container_id=case.id, vuln_num=vuln_num,
+                                                description=desc, rep_steps=rep_file)
+                    vulhub_case.save()
+
+                data['status'] = 'ok'
+
+            return Response(data)
 
         if action == 'upload':
             upload_file = request.FILES.get('rep_steps', None)
 
+            data = {}
+            data['status'] = 'failed'
             if not upload_file:
-                return HttpResponse('No file to upload!')
+                data['reason'] = 'No file to upload!'
+                return Response(data)
 
-            rep_steps_file = open(os.path.join(dir_name,upload_file.name), 'wb')
+            local_file_name = VulnContainer.object.last().id
+            rep_steps_file = open(os.path.join(dir_name,local_file_name), 'wb')
             for chunk in upload_file.chunks():
                 rep_steps_file.write(chunk)
 
             rep_steps_file.close()
+            data['status'] = 'ok'
 
-            return HttpResponse('Upload Done!')
+            return Response(data)

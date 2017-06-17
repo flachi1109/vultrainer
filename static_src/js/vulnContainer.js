@@ -155,7 +155,7 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
             $scope.vuln_number = "";
             $scope.description = "";
             $scope.fileUploader = new FileUploader({
-                url: '1/vulnContainer/f3123123asdfa123/upload',
+                url: '1/vulhubMode/upload',
                 alias: 'rep_steps',
                 queueLimit: 1
             });
@@ -164,8 +164,19 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
                 $uibModalInstance.dismiss('cancel');
             }
             $scope.confirm = function() {
+                // console.log($scope.fileUploader.queue[0].file.name);
+                // console.log(cur_case);
+                function success(response){
+                    console.log(response.data);
+                    if(response.data['status'] == 'ok'){
+                        fileUploader.uploadAll()
+                    }
+                }
+                function error(response){
 
-                $scope.fileUploader.uploadAll()
+                }
+                vulhubService.createVulhubCase($rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name)
+                    .then(success, error);
             }
 
         }])

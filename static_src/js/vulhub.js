@@ -30,17 +30,14 @@ angular.module('vulhub', [])
         };
 
         // create new vulhub case
-        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileUploader){
+        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileName){
             var deffered = $q.defer();
-            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description};
-            $http.get("/" + nodeId + "/vulhubMode/setup")
+            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileName};
+            $http.post("/" + nodeId + "/vulhubMode/setup", postData)
                 .then(function(response){
-                    if(response.data["status"]=="ok"){
-                        fileUploader.uploadAll()
-                    }   
-                    deffered.resolve(response.data);
+                    deffered.resolve(response);
                 }, function(response){
-                    deffered.reject(response.data);
+                    deffered.reject(response);
                 });
             return deffered.promise;
         };
