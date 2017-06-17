@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.conf.urls.static import static
+from django.conf.urls import handler404
 from django.conf import settings
 from django.views.generic import TemplateView
 # from django.contrib import admin
@@ -37,6 +38,7 @@ urlpatterns = [
     url(r'^test/', TemplateView.as_view(template_name='test2.html')),
     url(r'^viewset/', VulnContainerListViews.as_view())
 ]
+
 
 # add static resource url
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
