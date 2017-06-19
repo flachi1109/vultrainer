@@ -166,17 +166,20 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
             $scope.confirm = function() {
                 // console.log($scope.fileUploader.queue[0].file.name);
                 // console.log(cur_case);
-                function success(response){
-                    console.log(response.data);
-                    if(response.data['status'] == 'ok'){
-                        fileUploader.uploadAll()
-                    }
-                }
-                function error(response){
+                $scope.logData = vulhubService.createVulhubCase(window.location.host, $rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name);
+                $scope.logData.setup();
+                console.log($scope.logData);
+                // function success(response){
+                //     console.log(response.data);
+                //     if(response.data['status'] == 'ok'){
+                //         fileUploader.uploadAll()
+                //     }
+                // }
+                // function error(response){
 
-                }
-                vulhubService.createVulhubCase($rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name)
-                    .then(success, error);
+                // }
+                // vulhubService.createVulhubCase($rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name)
+                //     .then(success, error);
             }
 
         }])

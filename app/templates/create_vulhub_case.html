@@ -24,12 +24,18 @@
                         <div class="col-sm-12 space-6"></div>
                         <div class="col-sm-12">
                             <label class="col-sm-3 label-font-blue">漏洞描述: </label>
-                            <textarea class="col-sm-9 no-resize-150" type="" name="" placeholder="Description" ng-model="description"></textarea> 
+                            <textarea class="col-sm-9 no-resize-80" type="" name="" placeholder="Description" ng-model="description"></textarea> 
                         </div>
                         <div class="col-sm-12 space-6"></div>
                         <div class="col-sm-12">
                             <label class="col-sm-3 label-font-blue">复现步骤: </label>
                             <input type="file" class="col-sm-9" name="" nv-file-select uploader="fileUploader"> </input>
+                        </div>
+                         <div class="col-sm-12 space-6"></div>
+                        <div class="col-sm-12 output" >
+                            <div ng-repeat="logLine in logData.collection">
+                                {{ logLine.data }}
+                            </div>
                         </div>
                     </div>
                 </div>

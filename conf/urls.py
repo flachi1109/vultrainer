@@ -36,7 +36,8 @@ urlpatterns = [
 
     # will be deleted
     url(r'^test/', TemplateView.as_view(template_name='test2.html')),
-    url(r'^viewset/', VulnContainerListViews.as_view())
+    url(r'^viewset/', VulnContainerListViews.as_view()),
+    url(r'^websocket/', tests.echo),
 ]
 
 

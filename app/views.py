@@ -1,15 +1,17 @@
 # -*- coding:utf-8 -*-
 import time
 import os
+import json
 import ConfigParser
+import subprocess
 
 import docker
 from django.shortcuts import render
 from django.http import StreamingHttpResponse, HttpResponse
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
+from dwebsocket import accept_websocket
 
 from app.handler.BaseHandler import BaseHandler
 from app.handler.PlatformNodeHandler import PlatformNodeHandeler
@@ -116,8 +118,6 @@ class VulnContainerView(APIView):
 
             return response
 
-
-
 class VulhubOperateView(APIView):
 
     def get(self, request, node_id, action):
@@ -133,6 +133,9 @@ class VulhubOperateView(APIView):
 
         if action == 'create':
             return render(request, template_name='create_vulhub_case.html')
+
+        if action == 'setup':
+            self.setup_case(request, vulhub)
 
 
     def post(self, request, node_id, action):
@@ -186,3 +189,32 @@ class VulhubOperateView(APIView):
             data['status'] = 'ok'
 
             return Response(data)
+
+
+    @staticmethod
+    @accept_websocket
+    def setup_case(request, vulhub):
+        if request.is_websocket():
+            for msg in request.websocket:
+                msg_json = json.loads(msg)
+                build_popen = vulhub.case_build(msg_json['case_path'])
+                if build_popen:
+                    while True:
+                        log = build_popen.stdout.readline().strip()
+
+                        if log.find('Successfully built') > -1:
+                            build_suc_flag = 1
+                        if log:
+                            request.websocket.send(log)
+                        else:
+                            break
+
+                up_popen = vulhub.case_up(msg_json['case_path'])
+                if up_popen:
+                    while True:
+                        log = up_popen.stdout.readline().strip()
+                        if log:
+                            request.websocket.send(log)
+                        else:
+                            up_suc_flag = 1
+                            break

@@ -32,15 +32,25 @@
 .height-300{
     height: 300px;
 }
-.no-resize-150{
+.no-resize-80{
     resize: none;
-    height: 150px;
+    height: 80px;
 }
 .label-font-blue{
     color: #337ab7!important;
 }
 .pointer{
     cursor: pointer;
+}
+
+.output{
+    background-color: #342121;
+    color: #4AA629;
+    height: 90px;
+    overflow: auto;
+    border: 2px;
+    border-color: #949090;
+    border-radius: 3px;
 }
 .left-radius-4{
 	border-radius: 4px 0px 0px 4px!important;

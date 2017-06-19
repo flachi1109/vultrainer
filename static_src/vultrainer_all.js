@@ -42,9 +42,9 @@ angular.module('platformNode', [])
         };
     }]);
 
-angular.module('vulhub', [])
+angular.module('vulhub', ['ngWebSocket'])
     // The service to operate vulhub 
-    .factory('vulhubService', ['$http', '$q', function($http, $q){
+    .factory('vulhubService', ['$http', '$q', '$websocket', function($http, $q, $websocket){
         var service = {};
 
         // Get all vulhub files tree
@@ -74,16 +74,34 @@ angular.module('vulhub', [])
         };
 
         // create new vulhub case
-        service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileName){
-            var deffered = $q.defer();
-            var postData = {case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileName};
-            $http.post("/" + nodeId + "/vulhubMode/setup", postData)
-                .then(function(response){
-                    deffered.resolve(response);
-                }, function(response){
-                    deffered.reject(response);
-                });
-            return deffered.promise;
+        // service.createVulhubCase = function(nodeId, case_path, vuln_num, description, fileName){
+        //     var deffered = $q.defer();
+        //     var postData = {case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileName};
+        //     $http.post("/" + nodeId + "/vulhubMode/setup", postData)
+        //         .then(function(response){
+        //             deffered.resolve(response);
+        //         }, function(response){
+        //             deffered.reject(response);
+        //         });
+        //     return deffered.promise;
+        // };
+
+        service.createVulhubCase = function(server, nodeId, case_path, vuln_num, description, fileName){
+            var dataStream = $websocket("ws://"+ server + "/" + nodeId +"/vulhubMode/setup");
+            var collection = [];
+            dataStream.onMessage(function(message){
+            //collection.push(JSON.parse(message.data));
+                collection.push(message);
+            });
+
+            var methods = {
+                collection: collection,
+                setup: function(){
+                    dataStream.send(JSON.stringify({case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileName}));
+                    // dataStream.send('Hello');
+                }
+            };
+            return methods;
         };
 
         return service;
@@ -256,17 +274,20 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
             $scope.confirm = function() {
                 // console.log($scope.fileUploader.queue[0].file.name);
                 // console.log(cur_case);
-                function success(response){
-                    console.log(response.data);
-                    if(response.data['status'] == 'ok'){
-                        fileUploader.uploadAll()
-                    }
-                }
-                function error(response){
+                $scope.logData = vulhubService.createVulhubCase(window.location.host, $rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name);
+                $scope.logData.setup();
+                console.log($scope.logData);
+                // function success(response){
+                //     console.log(response.data);
+                //     if(response.data['status'] == 'ok'){
+                //         fileUploader.uploadAll()
+                //     }
+                // }
+                // function error(response){
 
-                }
-                vulhubService.createVulhubCase($rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name)
-                    .then(success, error);
+                // }
+                // vulhubService.createVulhubCase($rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name)
+                //     .then(success, error);
             }
 
         }])

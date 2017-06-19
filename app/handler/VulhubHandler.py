@@ -93,6 +93,58 @@ class Vulhub(object):
 
         return status
 
+    def case_build(self, case_path):
+        cwd = os.getcwd()
+        os.chdir(os.path.join(self.vulhub_dir, case_path))
+
+        def file_gen():
+            with open('README.md', 'r') as readme_file:
+                for line in readme_file:
+                    yield line
+
+        build_flag = False
+        for line in file_gen():
+            if line.find('docker-compose build') > -1:
+                build_flag = True
+                break
+        try:
+            if build_flag:
+                popen = subprocess.Popen('docker-compose build', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            else:
+                popen = None
+        except:
+            popen = None
+        finally:
+            os.chdir(cwd)
+
+        return popen
+
+    def case_up(self, case_path):
+        cwd = os.getcwd()
+        os.chdir(os.path.join(self.vulhub_dir, case_path))
+
+        def file_gen():
+            with open('README.md', 'r') as readme_file:
+                for line in readme_file:
+                    yield line
+
+        up_flag = False
+        for line in file_gen():
+            if line.find('docker-compose up -d') > -1:
+                up_flag = True
+                break
+        try:
+            if up_flag:
+                popen = subprocess.Popen('docker-compose up -d', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            else:
+                popen = None
+        except:
+            popen = None
+        finally:
+            os.chdir(cwd)
+
+        return popen
+
     def setup_case(self, case_path):
         cwd = os.getcwd()
         os.chdir(os.path.join(self.vulhub_dir, case_path))
