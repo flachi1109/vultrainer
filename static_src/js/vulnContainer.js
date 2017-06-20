@@ -166,7 +166,7 @@ angular.module('vulnContainer', ['ngTable', 'ui.bootstrap', 'treeControl', 'vulh
             $scope.confirm = function() {
                 // console.log($scope.fileUploader.queue[0].file.name);
                 // console.log(cur_case);
-                $scope.logData = vulhubService.createVulhubCase(window.location.host, $rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader.queue[0].file.name);
+                $scope.logData = vulhubService.createVulhubCase(window.location.host, $rootScope.nodeId, cur_case.full_path, $scope.vuln_number, $scope.description, $scope.fileUploader);
                 $scope.logData.setup();
                 console.log($scope.logData);
                 // function success(response){

@@ -180,7 +180,7 @@ class VulhubOperateView(APIView):
                 data['reason'] = 'No file to upload!'
                 return Response(data)
 
-            local_file_name = VulnContainer.object.last().id
+            local_file_name = str(VulnContainer.objects.last().id) + os.path.splitext(upload_file.name)[-1]
             rep_steps_file = open(os.path.join(dir_name,local_file_name), 'wb')
             for chunk in upload_file.chunks():
                 rep_steps_file.write(chunk)
@@ -195,26 +195,70 @@ class VulhubOperateView(APIView):
     @accept_websocket
     def setup_case(request, vulhub):
         if request.is_websocket():
+            log = {}
             for msg in request.websocket:
                 msg_json = json.loads(msg)
                 build_popen = vulhub.case_build(msg_json['case_path'])
+                log = {}
                 if build_popen:
                     while True:
-                        log = build_popen.stdout.readline().strip()
+                        info = build_popen.stdout.readline().strip()
+                        err = build_popen.stderr.readline().strip()
 
-                        if log.find('Successfully built') > -1:
-                            build_suc_flag = 1
-                        if log:
-                            request.websocket.send(log)
+                        if info:
+                            if info.find('Successfully built') > -1:
+                                log['build_success'] = 'ok'
+                            log['info'] = info
+                            request.websocket.send(json.dumps(log))
                         else:
-                            break
+                            if err:
+                                log['err'] = err
+                                request.websocket.send(json.dumps(log))
+                            else:
+                                break
+                else:
+                    log['build_success'] = 'ok'
+                    request.websocket.send(json.dumps(log))
 
                 up_popen = vulhub.case_up(msg_json['case_path'])
                 if up_popen:
+                    err_flag = False
                     while True:
-                        log = up_popen.stdout.readline().strip()
-                        if log:
-                            request.websocket.send(log)
+                        info = up_popen.stdout.readline().strip()
+                        err = up_popen.stderr.readline().strip()
+
+                        if info:
+                            log['info'] = info
+                            request.websocket.send(json.dumps(log))
                         else:
-                            up_suc_flag = 1
-                            break
+                            if err:
+                                log['err'] = err
+                                request.websocket.send(json.dumps(log))
+                                err_flag = True
+                            else:
+                                if err_flag is False:
+                                    log['up_success'] = 'ok'
+                                    request.websocket.send(json.dumps(log))
+                                break
+
+
+    def ins_case_info(self, request, node_id):
+        case_path = request.data['case_path']
+        vuln_num = request.data['vuln_num']
+        desc = request.data['desc']
+        rep_file = request.data['rep_file']
+        vulhub = Vulhub(vulhub_conf='app/extra.conf')
+
+        docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
+        before = len(docker_node.containers.list(all=True))
+
+        docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
+        after = len(docker_node.containers.list(all=True))
+        new_cases = docker_node.containers.list(limit=(after - before))
+
+        rep_file = str(VulnContainer.object.last().id + (after - before)) \
+                       + os.path.splitext(rep_file)[-1]
+        for case in new_cases:
+            vulhub_case = VulnContainer(container_id=case.id, vuln_num=vuln_num,
+                                            description=desc, rep_steps=rep_file)
+            vulhub_case.save()

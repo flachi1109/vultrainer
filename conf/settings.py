@@ -124,3 +124,6 @@ STATIC_URL = '/assets/'
 STATICFILES_DIRS = (
     os.path.join(APP_PATH, 'app/templates/assets').replace('\\', '/'),
 )
+
+#websocket backends
+# WEBSOCKET_FACTORY_CLASS = 'dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory'

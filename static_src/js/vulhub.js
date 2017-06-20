@@ -42,19 +42,34 @@ angular.module('vulhub', ['ngWebSocket'])
         //     return deffered.promise;
         // };
 
-        service.createVulhubCase = function(server, nodeId, case_path, vuln_num, description, fileName){
+        service.createVulhubCase = function(server, nodeId, case_path, vuln_num, description, fileUploader){
             var dataStream = $websocket("ws://"+ server + "/" + nodeId +"/vulhubMode/setup");
             var collection = [];
+            var build_success = false;
+            var up_success = false;
             dataStream.onMessage(function(message){
-            //collection.push(JSON.parse(message.data));
-                collection.push(message);
+                collection.push(JSON.parse(message.data));
+                console.log(JSON.parse(message.data).build_success);
+                console.log(JSON.parse(message.data).up_success);
+
+                if (JSON.parse(message.data).build_success == 'ok'){
+                    build_success = true;
+                };
+                if (JSON.parse(message.data).up_success == 'ok'){
+                    up_success = true;
+                };
+                
+                if (build_success && up_success){
+                    console.log('Yes');
+                    fileUploader.uploadAll();
+                }
+                // collection.push(message);
             });
 
             var methods = {
                 collection: collection,
                 setup: function(){
-                    dataStream.send(JSON.stringify({case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileName}));
-                    // dataStream.send('Hello');
+                    dataStream.send(JSON.stringify({case_path:case_path, vuln_num: vuln_num, desc: description, rep_file: fileUploader.queue[0].file.name}));
                 }
             };
             return methods;

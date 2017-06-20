@@ -26,10 +26,11 @@ def echo(request):
         for msg in request.websocket:
             if msg == 'Hello':
                 request.websocket.send('Yes!')
-                popen = subprocess.Popen('tail -f /var/log/auth.log', stdout=subprocess.PIPE, shell=True)
+                popen = subprocess.Popen('cat static_src/vultrainer_all.js ', stdout=subprocess.PIPE, shell=True)
                 while True:
                     log = popen.stdout.readline().strip()
                     if log:
+                        # request.websocket.send('abc')
                         request.websocket.send(log)
                 # for log in popen.stdout.readline().strip():
                 #     request.websocket.send(log)

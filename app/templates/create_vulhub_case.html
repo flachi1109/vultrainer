@@ -33,8 +33,9 @@
                         </div>
                          <div class="col-sm-12 space-6"></div>
                         <div class="col-sm-12 output" >
-                            <div ng-repeat="logLine in logData.collection">
-                                {{ logLine.data }}
+                            <div ng-repeat="logLine in logData.collection"l>
+                                <div>{{ logLine.info }}</div>
+                                <div class="error">{{ logLine.err }}</div>
                             </div>
                         </div>
                     </div>
