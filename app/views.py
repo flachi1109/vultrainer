@@ -1,9 +1,8 @@
 # -*- coding:utf-8 -*-
-import time
 import os
 import json
 import ConfigParser
-import subprocess
+import re
 
 import docker
 from django.shortcuts import render
@@ -122,7 +121,7 @@ class VulhubOperateView(APIView):
 
     def get(self, request, node_id, action):
         vulhub = Vulhub(vulhub_conf='app/extra.conf')
-        vulhub_tree = ''
+        # vulhub_tree = ''
         if action == 'tree':
             vulhub_tree = vulhub.get_vulhub_dict()
             return Response(vulhub_tree)
@@ -135,7 +134,8 @@ class VulhubOperateView(APIView):
             return render(request, template_name='create_vulhub_case.html')
 
         if action == 'setup':
-            self.setup_case(request, vulhub)
+            self.setup_case(request, vulhub, node_id)
+
 
 
     def post(self, request, node_id, action):
@@ -190,16 +190,34 @@ class VulhubOperateView(APIView):
 
             return Response(data)
 
+        if action == 'save':
+            vuln_num = request.data['vuln_num']
+            desc = request.data['desc']
+            rep_file = request.data['rep_file']
+
+            docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
+            new_cases = docker_node.containers.list(limit=1)
+
+            rep_file = str(VulnContainer.objects.last().id + 1) \
+                       + os.path.splitext(rep_file)[-1]
+            for case in new_cases:
+                vulhub_case = VulnContainer(container_id=case.id, vuln_num=vuln_num,
+                                            description=desc, rep_steps=rep_file)
+                vulhub_case.save()
+
+            data = {}
+            data['status'] = 'ok'
+
+            return Response(data)
 
     @staticmethod
     @accept_websocket
-    def setup_case(request, vulhub):
+    def setup_case(request, vulhub, node_id):
+        log = {}
         if request.is_websocket():
-            log = {}
             for msg in request.websocket:
                 msg_json = json.loads(msg)
                 build_popen = vulhub.case_build(msg_json['case_path'])
-                log = {}
                 if build_popen:
                     while True:
                         info = build_popen.stdout.readline().strip()
@@ -222,43 +240,15 @@ class VulhubOperateView(APIView):
 
                 up_popen = vulhub.case_up(msg_json['case_path'])
                 if up_popen:
-                    err_flag = False
                     while True:
-                        info = up_popen.stdout.readline().strip()
-                        err = up_popen.stderr.readline().strip()
+                        info = up_popen.stderr.readline().strip()
 
                         if info:
                             log['info'] = info
+                            if re.match(r'.*Creating.*done', info):
+                                log['up_success'] = 'ok'
                             request.websocket.send(json.dumps(log))
                         else:
-                            if err:
-                                log['err'] = err
-                                request.websocket.send(json.dumps(log))
-                                err_flag = True
-                            else:
-                                if err_flag is False:
-                                    log['up_success'] = 'ok'
-                                    request.websocket.send(json.dumps(log))
-                                break
+                            break
 
 
-    def ins_case_info(self, request, node_id):
-        case_path = request.data['case_path']
-        vuln_num = request.data['vuln_num']
-        desc = request.data['desc']
-        rep_file = request.data['rep_file']
-        vulhub = Vulhub(vulhub_conf='app/extra.conf')
-
-        docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
-        before = len(docker_node.containers.list(all=True))
-
-        docker_node = BaseHandler(pltfnode_id=node_id).get_docker_client()
-        after = len(docker_node.containers.list(all=True))
-        new_cases = docker_node.containers.list(limit=(after - before))
-
-        rep_file = str(VulnContainer.object.last().id + (after - before)) \
-                       + os.path.splitext(rep_file)[-1]
-        for case in new_cases:
-            vulhub_case = VulnContainer(container_id=case.id, vuln_num=vuln_num,
-                                            description=desc, rep_steps=rep_file)
-            vulhub_case.save()

@@ -106,6 +106,9 @@ angular.module('vulhub', ['ngWebSocket'])
                 if (build_success && up_success){
                     console.log('Yes');
                     fileUploader.uploadAll();
+                    var postData = {vuln_num: vuln_num, desc: description, rep_file: fileUploader.queue[0].file.name}
+                    $http.post("/" + nodeId + "/vulhubMode/save", postData)
+
                 }
                 // collection.push(message);
             });
